@@ -1,29 +1,29 @@
 {
-  "name": "alcpay-app",
+  "name": "alcpay-admin",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
-  "sourceRoot": "apps/alcpay-app/src",
-  "tags": ["app", "ui"],
+  "prefix": "admin",
+  "sourceRoot": "apps/alcpay-admin/src",
+  "tags": ["scope:admin", "type:ui"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/alcpay-app",
-        "index": "apps/alcpay-app/src/index.html",
-        "browser": "apps/alcpay-app/src/main.ts",
+        "outputPath": "dist/apps/alcpay-admin",
+        "index": "apps/alcpay-admin/src/index.html",
+        "browser": "apps/alcpay-admin/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/alcpay-app/tsconfig.app.json",
+        "tsConfig": "apps/alcpay-admin/tsconfig.app.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/alcpay-app/public"
+            "input": "apps/alcpay-admin/public"
           }
         ],
         "styles": [
           "libs/theme/src/lib/tailwind.css",
-          "apps/alcpay-app/src/styles.css"
+          "apps/alcpay-admin/src/styles.css"
         ],
         "scripts": []
       },
@@ -55,10 +55,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "alcpay-app:build:production"
+          "buildTarget": "alcpay-admin:build:production"
         },
         "development": {
-          "buildTarget": "alcpay-app:build:development"
+          "buildTarget": "alcpay-admin:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -66,7 +66,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "alcpay-app:build"
+        "buildTarget": "alcpay-admin:build"
       }
     },
     "lint": {
@@ -76,15 +76,15 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/alcpay-app/jest.config.ts"
+        "jestConfig": "apps/alcpay-admin/jest.config.ts"
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "alcpay-app:build",
+        "buildTarget": "alcpay-admin:build",
         "port": 4200,
-        "staticFilePath": "dist/apps/alcpay-app/browser",
+        "staticFilePath": "dist/apps/alcpay-admin/browser",
         "spa": true
       }
     }
