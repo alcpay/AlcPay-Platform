@@ -14,21 +14,14 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "67c34ccbfa43dc1782f749c9",
+  "nxCloudId": "67c4c0e7df5e79d612166419",
   "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "accessToken": ""
-      }
-    }
+    "default": { "runner": "nx-cloud", "options": { "accessToken": "" } }
   },
   "targetDefaults": {
     "@nx/angular:serve": {
       "cache": false,
-      "configurations": {
-        "production": {}
-      },
+      "configurations": { "production": {} },
       "defaultConfiguration": "production",
       "executor": "@nx/angular:ng-dev-server",
       "dependsOn": ["^build"]
@@ -47,9 +40,7 @@
         "{workspaceRoot}/eslint.config.mjs"
       ]
     },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
-    },
+    "e2e-ci--**/*": { "dependsOn": ["^build"] },
     "@nx/angular:ng-packagr-lite": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -67,30 +58,13 @@
         "serveStaticTargetName": "serve-static"
       }
     },
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/angular/plugin",
-      "options": {
-        "targetName": "angular"
-      }
-    },
+    { "plugin": "@nx/playwright/plugin", "options": { "targetName": "e2e" } },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
+    { "plugin": "@nx/angular/plugin", "options": { "targetName": "angular" } },
     {
       "plugin": "@nx/js/typescript",
       "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
+        "typecheck": { "targetName": "typecheck" },
         "build": {
           "targetName": "tsc:build",
           "configName": "tsconfig.lib.json",
@@ -120,9 +94,6 @@
       "unitTestRunner": "vitest",
       "style": "css"
     },
-    "@nx/angular:component": {
-      "style": "css",
-      "standalone": true
-    }
+    "@nx/angular:component": { "style": "css", "standalone": true }
   }
 }
