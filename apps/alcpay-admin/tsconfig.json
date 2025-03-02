@@ -13,6 +13,9 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/theme"
+    },
+    {
       "path": "./tsconfig.editor.json"
     },
     {

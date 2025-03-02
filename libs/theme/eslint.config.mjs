@@ -42,7 +42,8 @@ export default [
   },
   {
     files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
+    rules: {
+      'html/close-tag': 'error',
+    },
   },
 ];

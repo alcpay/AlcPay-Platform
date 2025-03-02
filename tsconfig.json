@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/alcpay-admin-e2e"
+    },
+    {
+      "path": "./apps/alcpay-app-e2e"
+    },
+    {
+      "path": "./apps/alcpay-admin"
+    },
+    {
+      "path": "./apps/alcpay-app"
+    },
+    {
+      "path": "./libs/services"
+    },
+    {
+      "path": "./libs/theme"
+    }
+  ]
+}

@@ -1,1 +1,1 @@
-export * from './lib/theme/theme.component';
+// This file is intentionally left blank.

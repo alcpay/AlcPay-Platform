@@ -1,4 +1,90 @@
-# AlcpayPlatform
+# Alcpay Platform
+
+Welcome to the Alcpay Platform!
+
+This is a monorepo for the Alcpay Platform. It contains the code for the Alcpay Platform and its dependencies.  We leverage Nx to manage our workspace.  Our builds are also integrated with Github Actions and Nx Cloud.
+
+This repository contains the following projects:
+
+## Applications
+
+### alcpay-app
+
+This is the main application for the Alcpay Platform. It is a Angular application that uses the Alcpay Components and Services.  Our main application is built with Angular.
+
+### alcpay-admin
+
+This is the admin application for the Alcpay Platform. It is a Angular application that uses the Alcpay Components and Services.  Our admin application is built with Angular.
+
+### alcpay-api
+
+This is the API for the Alcpay Platform. It is a NestJS application that uses the Alcpay Components and Services.  Our API is built with NestJS.
+
+## Libraries (./libs)
+
+### components
+
+Re-usable components for the Alcpay Platform.
+
+### services
+
+Re-usable services for the Alcpay Platform.
+
+### theme
+
+Re-usable theme for the Alcpay Platform.
+
+### tailwind
+
+Re-usable tailwind for the Alcpay Platform.
+
+## Installation
+
+### Installing Node using nvm
+
+We recommend using nvm to install Node.js.  This will allow you to easily switch between versions of Node.js.
+
+```sh
+nvm install 20
+nvm use 20
+```
+
+### Installing dependencies
+
+We recommend using npm to install the dependencies.  This will ensure that you are using the correct version of Node.js and the correct version of npm.
+
+```sh
+npm install --legacy-peer-deps
+```
+
+## Running and Building the Alcpay Platform
+
+To run and build the Alcpay Platform, you can use the following commands:
+
+```sh
+npx nx serve alcpay-app # Starts the main application
+npx nx serve alcpay-admin # Starts the admin application
+npx nx serve alcpay-api # Starts the API
+npx build theme # Builds the reusable theme
+npx build services # Builds the reusable services
+npx build components # Builds the reusable components
+```
+
+Each command has a specific purpose:
+
+- `npx nx serve alcpay-app`: Starts the main application of the Alcpay Platform. This is an Angular application.
+
+- `npx nx serve alcpay-admin`: Starts the admin application of the Alcpay Platform. This is also an Angular application.
+
+- `npx nx serve alcpay-api`: Starts the API for the Alcpay Platform. This is a NestJS application.
+
+- `npx build theme`: Builds the reusable theme for the Alcpay Platform.
+
+- `npx build services`: Builds the reusable services for the Alcpay Platform.
+
+- `npx build components`: Builds the reusable components for the Alcpay Platform.
+
+Please ensure that you have installed all the necessary dependencies before running these commands.
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 

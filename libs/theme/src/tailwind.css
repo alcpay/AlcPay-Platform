@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+/* Custom Fonts */
+@import 'styles/fonts.css';
+@import 'styles/typography.css';
+
+@layer theme {
+    --font-family-inter: 'Inter', sans-serif;
+    --font-family-satoshi: 'Satoshi', sans-serif;
+}

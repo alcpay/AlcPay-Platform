@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
     "target": "es2022",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "files": [],
   "include": [],

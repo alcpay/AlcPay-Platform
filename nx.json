@@ -15,8 +15,25 @@
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
   "nxCloudId": "67c34ccbfa43dc1782f749c9",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-cloud",
+      "options": {
+        "accessToken": ""
+      }
+    }
+  },
   "targetDefaults": {
-    "@angular-devkit/build-angular:application": {
+    "@nx/angular:serve": {
+      "cache": false,
+      "configurations": {
+        "production": {}
+      },
+      "defaultConfiguration": "production",
+      "executor": "@nx/angular:ng-dev-server",
+      "dependsOn": ["^build"]
+    },
+    "@nx/angular:browser": {
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
@@ -30,19 +47,6 @@
         "{workspaceRoot}/eslint.config.mjs"
       ]
     },
-    "@nx/jest:jest": {
-      "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
-    },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
     },
@@ -54,6 +58,16 @@
   },
   "plugins": [
     {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "serveStaticTargetName": "serve-static"
+      }
+    },
+    {
       "plugin": "@nx/playwright/plugin",
       "options": {
         "targetName": "e2e"
@@ -64,6 +78,34 @@
       "options": {
         "targetName": "lint"
       }
+    },
+    {
+      "plugin": "@nx/angular/plugin",
+      "options": {
+        "targetName": "angular"
+      }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "tsc:build",
+          "configName": "tsconfig.lib.json",
+          "buildDepsName": "tsc:build-deps",
+          "watchDepsName": "tsc:watch-deps"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/rollup/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
     }
   ],
   "generators": {
@@ -71,14 +113,16 @@
       "e2eTestRunner": "playwright",
       "linter": "eslint",
       "style": "css",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "vitest"
     },
     "@nx/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "vitest",
+      "style": "css"
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "css",
+      "standalone": true
     }
   }
 }

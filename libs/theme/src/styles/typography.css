@@ -1,0 +1,23 @@
+/* Typography */
+
+/* Inter */
+:root, html, body, inter-variable, text-body { 
+    font-family: Inter, sans-serif; 
+}
+
+/* Satoshi */
+h1, h2, h3, h4, h5, h6, text-display, text-heading, satoshi-variable { 
+    font-family: Satoshi, sans-serif; 
+}
+
+@supports (font-variation-settings: normal) {
+    /* Inter Variable */
+    :root, html, body, inter-variable, text-body { 
+        font-family: InterVariable, sans-serif; 
+    }
+
+    /* Satoshi Variable */
+    h1, h2, h3, h4, h5, h6, text-display, text-heading, satoshi-variable { 
+        font-family: SatoshiVariable, sans-serif; 
+    }
+}
