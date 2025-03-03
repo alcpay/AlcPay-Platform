@@ -5,6 +5,7 @@ declare module '*.analog' {
   export default cmp;
 }
 
+
 declare module '*.ag' {
   import { Type } from '@angular/core';
 

@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "my-app": {
+    "alcpay-app": {
       "projectType": "application",
       "root": ".",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "alcpay",
       "architect": {
         "build": {
           "builder": "@analogjs/platform:vite",
@@ -32,16 +32,16 @@
           "builder": "@analogjs/platform:vite-dev-server",
           "defaultConfiguration": "development",
           "options": {
-            "buildTarget": "my-app:build",
+            "buildTarget": "alcpay-app:build",
             "port": 5173
           },
           "configurations": {
             "development": {
-              "buildTarget": "my-app:build:development",
+              "buildTarget": "alcpay-app:build:development",
               "hmr": true
             },
             "production": {
-              "buildTarget": "my-app:build:production"
+              "buildTarget": "alcpay-app:build:production"
             }
           }
         },
@@ -50,5 +50,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
