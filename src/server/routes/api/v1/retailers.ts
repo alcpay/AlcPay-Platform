@@ -6,22 +6,7 @@
  */
 
 import { defineEventHandler, getRouterParams } from 'h3';
-
-/**
- * Represents a Retailer with an ID.
- */
-class Retailer {
-  // The unique identifier for the retailer
-  constructor(private id: string) {}
-
-  /**
-   * Retrieves the retailer ID.
-   * @returns {Promise<string>} The retailer ID.
-   */
-  async getRetailer(): Promise<string> {
-    return this.id;
-  }
-}
+import { Retailer } from './../../../../models';
 
 export default defineEventHandler(async (event) => {
   // Extracts the retailer ID from the request parameters

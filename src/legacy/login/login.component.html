@@ -1,0 +1,107 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div class="rounded-lg bg-white p-8 shadow-lg">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          class="mx-auto h-16 w-auto"
+          src="../../../assets/images/logo.png"
+          alt="AlcPay Logo" />
+        <h2 class="mb-10 mt-10 text-center text-2xl/9 font-bold tracking-tight text-black">Sign in to your account</h2>
+      </div>
+      <form
+        class="space-y-6"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmitLoginForm()">
+        <div>
+          <label
+            for="email"
+            class="block text-sm/6 font-medium text-gray-900"
+            >Email address</label
+          >
+          <div class="mt-2">
+            <input
+              id="inputEmail"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              aria-label="Email address"
+              formControlName="email"
+              [ngClass]="{ 'border-red-500': submitted && f.email.errors }"
+              autofocus
+              aria-required="true"
+              [attr.aria-invalid]="submitted && f.email.errors ? 'true' : 'false'"
+              placeholder="Email address"
+              class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 invalid:border-red-500 invalid:text-red-500 focus:ring-2 focus:ring-inset focus:ring-green-600 disabled:bg-gray-100 disabled:text-gray-400 sm:text-sm/6" />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between">
+            <label
+              for="password"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Password</label
+            >
+            <div class="text-sm">
+              <a
+                href="#"
+                class="font-semibold text-green-600 hover:text-green-500"
+                >Forgot password?</a
+              >
+            </div>
+          </div>
+          <div class="mt-2">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              id="password"
+              formControlName="password"
+              autocomplete="current-password"
+              required
+              [ngClass]="{ 'border-red-500': submitted && f.password.errors }"
+              aria-required="true"
+              class="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 invalid:border-red-500 invalid:text-red-500 focus:ring-2 focus:ring-inset focus:ring-green-600 disabled:bg-gray-100 disabled:text-gray-400 sm:text-sm/6" />
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <div class="flex gap-3">
+            <div class="flex h-6 shrink-0 items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600 focus:ring-offset-0"
+                formControlName="rememberMe"
+                (change)="updateRememberMe($event)"
+                [checked]="f.rememberMe.value"
+                role="switch" />
+            </div>
+            <label
+              for="rememberMe"
+              class="block text-sm text-gray-900"
+              >Remember me</label
+            >
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm/6 font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+            Sign in
+          </button>
+        </div>
+      </form>
+
+      <!-- <p class="mt-10 text-center text-sm/6 text-gray-500">
+        Not a customer?
+        <a href="#" class="font-semibold text-green-600 hover:text-green-500" (click)="navToSignUpForm()">Sign up to
+          get
+          started</a>
+      </p> -->
+    </div>
+  </div>
+</div>

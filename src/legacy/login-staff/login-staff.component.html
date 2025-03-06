@@ -1,0 +1,80 @@
+<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-8">
+    <div class="rounded-lg bg-white p-8 shadow-lg">
+      <div class="flex justify-center">
+        <img
+          src="../../../assets/images/avatar.png"
+          alt="Admin Avatar"
+          class="-mt-20 h-32 w-32" />
+      </div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Super Admin Login</h2>
+      <form
+        class="mt-8 space-y-6"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()">
+        <div class="-space-y-px rounded-md shadow-sm">
+          <div>
+            <label
+              for="inputEmail"
+              class="sr-only"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="inputEmail"
+              formControlName="email"
+              required
+              autofocus
+              class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              placeholder="Email"
+              [ngClass]="{ 'border-red-500': isFormSubmitted && formControls.email.errors }" />
+          </div>
+          <div>
+            <label
+              for="inputPassword"
+              class="sr-only"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="inputPassword"
+              formControlName="password"
+              required
+              class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              placeholder="Password"
+              [ngClass]="{ 'border-red-500': isFormSubmitted && formControls.password.errors }" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input
+              id="customCheck1"
+              type="checkbox"
+              formControlName="rememberMe"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+            <label
+              for="customCheck1"
+              class="ml-2 block text-sm text-gray-900"
+              >Remember Username</label
+            >
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Login as Super Admin
+          </button>
+          <button
+            type="button"
+            (click)="navigateToCustomerLogin()"
+            class="group relative mt-4 flex w-full justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Login as Customer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

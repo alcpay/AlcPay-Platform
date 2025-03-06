@@ -1,0 +1,61 @@
+/* Apply common styles to all heading elements */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    @apply !font-bold block;
+    font-family: var(--font-family-display);
+}
+
+/* Specific styles for each heading level */
+h1, .h1 {
+    @apply !text-4xl;
+}
+
+h2, .h2 {
+    @apply !text-3xl;
+}
+
+h3, .h3 {
+    @apply !text-2xl !font-medium;
+}
+
+h4, .h4 {
+    @apply !text-xl !font-medium text-gray-600 !uppercase;
+}
+
+h5, .h5 {
+    @apply uppercase !font-bold text-gray-500;
+}
+
+/* Section styling */
+.section {
+    @apply flex flex-col gap-4 py-8 px-4 rounded-lg bg-white shadow-md border-2 border-solid border-gray-200;
+}
+
+/* Title, subtitle, and description within a section */
+.section .title, .section .subtitle, .section .description {
+    @apply font-light text-gray-700;
+}
+
+.section .title {
+    @apply h1;
+}
+
+.section .subtitle {
+    @apply h2;
+}
+
+.section .description {
+    @apply text-sm;
+}
+
+/* Help link styling */
+.section .help-link {
+    @apply text-sm font-light text-orange-500 align-middle inline-block float-right before:content-['\e88e'];
+}
+
+.section .help-link:hover {
+    @apply text-orange-600;
+}
+
+.section .help-link:active {
+    @apply text-orange-700;
+}

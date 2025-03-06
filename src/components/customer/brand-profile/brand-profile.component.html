@@ -1,0 +1,58 @@
+<!--
+    Brand Profile Component Template
+
+    This template provides a user interface for managing brand profile information.
+    It allows non-super admin users to update their brand details including name,
+    email, contact, and website.
+
+    @component BrandProfileComponent
+    @description Renders a form for brand profile management
+    @requires Angular, Two-way data binding
+
+    @example
+    <app-brand-profile></app-brand-profile>
+
+    @remarks
+    - Conditionally renders based on user admin status
+    - Provides input fields for brand details
+    - Includes a back navigation option
+-->
+<div class="rounded-lg bg-white p-6 shadow-lg">
+  <ng-container *ngIf="!currentUser?.isSuperAdmin">
+    <div class="mb-4">
+      <label class="mb-1 block text-sm font-medium text-gray-700">Brand Name</label>
+      <input
+        class="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-green-500"
+        [(ngModel)]="brandName"
+        placeholder="Example Brand" />
+    </div>
+    <div class="mb-4">
+      <label class="mb-1 block text-sm font-medium text-gray-700">Email</label>
+      <input
+        class="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-green-500"
+        [(ngModel)]="email"
+        placeholder="example@gmail.com" />
+    </div>
+    <div class="mb-4">
+      <label class="mb-1 block text-sm font-medium text-gray-700">Contact</label>
+      <input
+        class="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-green-500"
+        [(ngModel)]="contact"
+        placeholder="+12345678901" />
+    </div>
+    <div class="mb-6">
+      <label class="mb-1 block text-sm font-medium text-gray-700">Website</label>
+      <input
+        class="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-green-500"
+        [(ngModel)]="website"
+        placeholder="https://example.com" />
+    </div>
+    <div class="flex justify-center">
+      <button
+        class="btn btn-primary"
+        (click)="updateBrand()">
+        Update Profile
+      </button>
+    </div>
+  </ng-container>
+</div>

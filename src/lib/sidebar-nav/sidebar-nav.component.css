@@ -1,0 +1,8 @@
+/*
+  Application sidebar styles
+  Uses Tailwind CSS classes for consistent styling
+  Gradient can be configured via component inputs
+*/
+.application-sidebar {
+  @apply p-5 rounded-lg bg-gradient-to-br from-green-400 to-blue-500;
+}

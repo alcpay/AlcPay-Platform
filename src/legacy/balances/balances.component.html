@@ -1,0 +1,106 @@
+<div class="container mx-auto max-w-6xl">
+  <div class="mb-4">
+    <h2 class="text-2xl font-bold">Payments</h2>
+  </div>
+
+  <div class="mb-4">
+    <ul class="flex space-x-4">
+      <li>
+        <a
+          class="text-blue-500 hover:underline"
+          routerLink="/staff/payments"
+          >Payouts</a
+        >
+      </li>
+      <li>
+        <a
+          class="font-bold text-blue-500 hover:underline"
+          routerLink="/staff/balances"
+          >Balances</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <div class="overflow-x-auto">
+    <div class="table-responsive">
+      <table class="min-w-full table-auto">
+        <thead>
+          <tr class="bg-gray-200">
+            <th
+              scope="col"
+              class="px-4 py-2">
+              #
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-2">
+              Retailer
+              <i
+                class="fa fa-fw fa-sort cursor-pointer"
+                (click)="toggleSort('retailerName')"></i>
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-2">
+              Balance
+              <i
+                class="fa fa-fw fa-sort cursor-pointer"
+                (click)="toggleSort('amount')"></i>
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-2">
+              Stripe Account ID
+            </th>
+            <th
+              scope="col"
+              class="px-4 py-2">
+              Updated At
+            </th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="balanceData?.length; else noData">
+          <tr *ngFor="let data of balanceData; let idx = index">
+            <td class="border px-4 py-2">{{ idx + 1 }}</td>
+            <td class="border px-4 py-2">{{ data.retailerName }}</td>
+            <td class="border px-4 py-2">{{ data.balance.toFixed(2) }}</td>
+            <td class="border px-4 py-2">{{ data.accountId }}</td>
+            <td class="border px-4 py-2">{{ data.updatedAt | date: 'medium' }}</td>
+          </tr>
+        </tbody>
+
+        <ng-template #noData>
+          <tbody>
+            <tr>
+              <td
+                colspan="5"
+                class="text-center text-gray-500">
+                No data!
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+    </div>
+
+    <ul class="mt-4 flex space-x-2">
+      <ng-container *ngFor="let idx of pages">
+        <li>
+          <button
+            class="rounded border px-4 py-2"
+            (click)="navigateToPage(idx)">
+            {{ idx }}
+          </button>
+        </li>
+      </ng-container>
+
+      <label
+        *ngIf="dataLength !== 0"
+        class="text-blue-600">
+        Current Page: {{ pageNumber }}
+      </label>
+    </ul>
+  </div>
+</div>

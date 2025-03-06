@@ -1,0 +1,37 @@
+/**
+ * @file src/theme/icons.css
+ *
+ * @brief Tailwind CSS icon styles
+ *
+ * @author Mac Anderson
+ * ------------------------------------------------------------
+ */
+ /* Material Icons */
+@import 'material-icons/iconfont/outlined.css';
+@import 'material-icons/iconfont/filled.css';
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --icon-font-family: 'Material Icons';
+    --icon-outlined-font-family: 'Material Icons Outlined';
+}
+.icon {
+    @apply overflow-visible whitespace-nowrap; /* Apply Tailwind CSS utilities */
+    font-family: var(--icon-font-family); /* Use the defined icon font family */
+    font-size: var(--font-size-base); /* Inherit font size from parent */
+    color: inherit; /* Inherit color from parent */
+    line-height: var(--line-height-base); /* Inherit line height from parent */
+    vertical-align: middle; /* Align icon vertically in the middle */
+    display: inline-block; /* Display as inline-block for proper spacing */
+    fill: currentColor; /* Use current text color for fill */
+    stroke: currentColor; /* Use current text color for stroke */
+    stroke-width: 0; /* Set stroke width to 0 */
+    font-weight: 100;
+}
+.icon.outlined {
+    font-family: var(--icon-outlined-font-family);
+    font-weight: 100;
+}

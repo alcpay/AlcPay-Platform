@@ -1,0 +1,66 @@
+<!-- Card container with configurable background and padding -->
+<div [class]="'rounded-lg shadow-md ' + (backgroundColor || 'bg-white') + ' ' + (padding || 'p-4')">
+  <!-- Card header with optional title -->
+  <div
+    class="mb-4 flex items-center justify-between"
+    *ngIf="cardTitle">
+    <h3 class="text-lg font-semibold">{{ cardTitle }}</h3>
+
+    <!-- Action menu dropdown -->
+    <div
+      class="relative"
+      *ngIf="showActionMenu">
+      <button
+        class="rounded-full p-2 hover:bg-gray-100"
+        (click)="toggleActionMenu()"
+        title="Toggle menu"
+        aria-label="Toggle action menu">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor">
+          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+        </svg>
+      </button>
+
+      <!-- Dropdown menu -->
+      <div
+        *ngIf="isActionMenuOpen"
+        class="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white shadow-lg">
+        <div class="py-1">
+          <ng-container *ngFor="let link of actionMenuLinks">
+            <a
+              [href]="link.url"
+              [class]="link.activeClass || 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'"
+              [class.opacity-50]="link.disabled"
+              [attr.aria-disabled]="link.disabled"
+              *ngIf="link.isVisible">
+              <i
+                *ngIf="link.icon"
+                [class]="link.icon">
+              </i>
+              {{ link.label }}
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card content -->
+  <div class="card-content">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Card footer -->
+  <div
+    class="mt-4 border-t pt-4"
+    *ngIf="footerContent">
+    <a
+      [href]="footerContent.url"
+      class="text-gray-600 hover:text-gray-800">
+      {{ footerContent.label }}
+    </a>
+  </div>
+</div>

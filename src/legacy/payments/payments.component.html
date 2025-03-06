@@ -1,0 +1,146 @@
+<div class="mx-auto max-w-6xl px-4 py-6">
+  <!-- Page Header -->
+  <div class="mb-4">
+    <h2 class="text-2xl font-semibold text-gray-800">Payments</h2>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="mb-4 flex space-x-2 border-b">
+    <a
+      class="border-b-2 border-indigo-500 px-4 py-2 font-semibold text-gray-700"
+      routerLink="/customer/payments">
+      Payouts
+    </a>
+    <a
+      class="px-4 py-2 text-gray-500 hover:text-indigo-500"
+      routerLink="/customer/balances">
+      Balances
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Status</label>
+      <select
+        title="Status"
+        name="status"
+        [(ngModel)]="status"
+        class="w-full rounded-md border p-2 focus:ring-indigo-500">
+        <option value="">All</option>
+        <option value="true">Success</option>
+        <option value="false">Pending</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Order Number</label>
+      <input
+        [(ngModel)]="searchOrder"
+        placeholder="100001"
+        class="w-full rounded-md border p-2 focus:ring-indigo-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Retailer</label>
+      <input
+        [(ngModel)]="retailerName"
+        placeholder="Pops Liquor"
+        class="w-full rounded-md border p-2 focus:ring-indigo-500" />
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mb-4 flex space-x-2">
+    <button
+      class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+      (click)="search()">
+      Search
+    </button>
+    <button
+      class="rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+      (click)="clearSearch()">
+      Clear Filter
+    </button>
+  </div>
+
+  <!-- Responsive Table -->
+  <div class="overflow-x-auto rounded-lg bg-white shadow-md">
+    <table class="min-w-full border border-gray-300">
+      <thead class="bg-gray-200 text-gray-700">
+        <tr>
+          <th class="px-4 py-2 text-left">Order Number</th>
+          <th class="px-4 py-2 text-left">Amount</th>
+          <th class="px-4 py-2 text-left">Retailer</th>
+          <th class="px-4 py-2 text-left">Stripe Account ID</th>
+          <th class="px-4 py-2 text-left">Status</th>
+          <th class="px-4 py-2 text-left">Timestamp</th>
+          <th class="px-4 py-2 text-left">Payment Date</th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="filteredData()?.length">
+        <tr
+          *ngFor="let data of filteredData()"
+          class="border-b hover:bg-gray-100">
+          <td class="px-4 py-2">{{ data.orderNumber }}</td>
+          <td class="px-4 py-2">{{ data.amount.toFixed(2) }}</td>
+          <td class="px-4 py-2">{{ data.retailerName }}</td>
+          <td class="px-4 py-2">{{ data.destination }}</td>
+          <td class="px-4 py-2">
+            <span
+              class="rounded-md px-2 py-1 text-white"
+              [ngClass]="data.status ? 'bg-green-500' : 'bg-red-500'">
+              {{ data.status ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="px-4 py-2">{{ data.createdAt | date: 'medium' }}</td>
+          <td class="px-4 py-2">{{ data.createdAt | date: 'MM/dd/yyyy' }}</td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="!loading && !filteredData()?.length">
+        <tr>
+          <td
+            colspan="7"
+            class="py-4 text-center text-gray-500">
+            No data available
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="loading">
+        <tr>
+          <td
+            colspan="7"
+            class="py-4 text-center text-gray-500">
+            Loading...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-4 flex justify-center space-x-2">
+    <button
+      class="rounded-md bg-gray-300 px-3 py-1 hover:bg-gray-400"
+      (click)="navigatePrev()"
+      [disabled]="pageNumber === 1">
+      Prev
+    </button>
+    <button
+      *ngFor="let page of [1, 2, 3, 4, 5]"
+      class="px-3 py-1"
+      [ngClass]="pageNumber === page ? 'bg-indigo-600 text-white' : 'bg-gray-200 hover:bg-gray-300'"
+      (click)="navigateToPage(page)">
+      {{ page }}
+    </button>
+    <button
+      class="rounded-md bg-gray-300 px-3 py-1 hover:bg-gray-400"
+      (click)="navigateNext()"
+      [disabled]="pageNumber === numPages">
+      Next
+    </button>
+  </div>
+</div>

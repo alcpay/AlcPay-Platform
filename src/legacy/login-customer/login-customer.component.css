@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+@import 'ngx-toastr/toastr';
+@import '../../../styles/theme.css';
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

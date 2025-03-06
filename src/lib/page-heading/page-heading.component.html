@@ -1,0 +1,14 @@
+<div class="p-4 md:flex md:items-center md:justify-between">
+  <div class="min-w-0 flex-1">
+    <h2
+      class="text-2xl text-gray-900 font-lightsm:truncate sm:text-3xl sm:tracking-tight">
+        <span *ngIf="icon" class="inline-block mr-1 font-bold material-symbols-outlined text-3xl">
+          {{icon}}
+        </span>
+        <span *ngIf="title">{{title}}</span>
+      </h2>
+  </div>
+  <div class="flex md:ml-4 md:mt-0">
+    <ng-content></ng-content>
+  </div>
+</div>

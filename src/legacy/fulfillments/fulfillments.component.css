@@ -1,0 +1,14 @@
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f3f4f6;
+  text-transform: uppercase;
+}

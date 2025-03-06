@@ -1,0 +1,228 @@
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="rounded-lg bg-white p-6 shadow-lg">
+    <!-- Header -->
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-gray-900">Retailers</h2>
+
+      <div class="flex space-x-4">
+        <button
+          *ngIf="currentUser && currentUser.roleId < 3"
+          class="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-emerald-700"
+          (click)="open(addNewRetailerModal)">
+          <span class="mr-2">+</span>
+          Add New Retailer
+        </button>
+        <button
+          *ngIf="currentUser && currentUser.roleId > 2"
+          class="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-emerald-700"
+          (click)="open(requestRetailerModal)">
+          <span class="mr-2">+</span>
+          Request Retailer
+        </button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Retailer Name
+              <button
+                class="ml-1 text-gray-400 hover:text-gray-600"
+                (click)="toggleSort()">
+                <i class="fa fa-fw fa-sort"></i>
+              </button>
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Contact
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Email
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Website
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Stripe
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              In-House
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Shopify Location
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Ratings
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              States
+            </th>
+            <th
+              *ngIf="currentUser && currentUser.roleId < 3"
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr *ngFor="let list of retailerList">
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">{{ list.businessName }}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ list.contact }}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ list.email }}</td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ list.website }}</td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <span
+                *ngIf="list.isActivated"
+                class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                Active
+              </span>
+              <span
+                *ngIf="!list.isActivated"
+                class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
+                Inactive
+                <button
+                  *ngIf="!list.isActivated"
+                  class="ml-2 text-xs text-emerald-600 underline hover:text-emerald-800"
+                  (click)="createAccountLink(list.accountId)">
+                  Resend Email
+                </button>
+              </span>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <button
+                (click)="showInHouseModal(inHouseModal, list)"
+                [class]="
+                  list.inHouseBusiness
+                    ? 'inline-flex cursor-pointer rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 hover:bg-green-200'
+                    : 'inline-flex cursor-pointer rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800 hover:bg-red-200'
+                ">
+                {{ list.inHouseBusiness ? 'Yes' : 'No' }}
+              </button>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <button
+                *ngIf="!list.locationId"
+                class="text-sm font-medium text-emerald-600 underline hover:text-emerald-800"
+                (click)="assignLocationModal(locationModal, list)">
+                Assign Shopify Location
+              </button>
+              <div
+                *ngIf="list.locationId"
+                class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500">{{ list.locationName }}({{ list.locationId }})</span>
+                <button
+                  class="text-sm font-medium text-emerald-600 underline hover:text-emerald-800"
+                  (click)="unlink(list.id)">
+                  Unassign
+                </button>
+              </div>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <button
+                (click)="!list.overallAvgRating && openRatingModal(ratingModal, list)"
+                [class]="'text-xl ' + (list.overallAvgRating < 1 ? 'underline' : '')">
+                {{ starGenerator(list.overallAvgRating) }}
+              </button>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <div class="flex flex-wrap gap-1">
+                <span
+                  *ngFor="let state of list.states"
+                  class="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
+                  {{ state.name }}
+                </span>
+              </div>
+            </td>
+            <td
+              *ngIf="currentUser && currentUser.roleId < 3"
+              class="whitespace-nowrap px-6 py-4 text-sm font-medium">
+              <div class="flex space-x-3">
+                <button
+                  (click)="updateModal(update_retailer_modal, list)"
+                  class="text-emerald-600 hover:text-emerald-800">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  (click)="deleteRetailer(list.id)"
+                  class="text-red-600 hover:text-red-800">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="retailerList?.length == 0">
+            <td
+              colspan="9"
+              class="px-6 py-4 text-center text-sm text-gray-500">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Keep all the modal templates as they were -->
+<!-- Add New Retailer Modal -->
+<ng-template
+  #addNewRetailerModal
+  let-modal>
+  ...
+</ng-template>
+
+<!-- Request Retailer Modal -->
+<ng-template
+  #request_retailer_content
+  let-modal>
+  ...
+</ng-template>
+
+<!-- Update Retailer Modal -->
+<ng-template
+  #update_retailer_modal
+  let-modal>
+  ...
+</ng-template>
+
+<!-- Location Modal -->
+<ng-template
+  #locationModal
+  let-modal>
+  ...
+</ng-template>
+
+<!-- In House Modal -->
+<ng-template
+  #inHouseModal
+  let-modal>
+  ...
+</ng-template>
+
+<!-- Rating Modal -->
+<ng-template
+  #ratingModal
+  let-modal>
+  ...
+</ng-template>

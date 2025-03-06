@@ -1,0 +1,173 @@
+<div class="container mx-auto max-w-6xl">
+  <!-- Page Header -->
+  <div class="mb-3">
+    <h2 class="text-2xl font-bold text-gray-800">Fulfillments Management</h2>
+  </div>
+  <!-- Filtering Section -->
+  <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div>
+      <label
+        for="statusSelect"
+        class="block text-sm font-medium text-gray-700"
+        >Status</label
+      >
+      <select
+        id="statusSelect"
+        [(ngModel)]="status"
+        class="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-indigo-300">
+        <option value="">All Statuses</option>
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+    </div>
+    <div>
+      <label
+        for="dateRangeSelect"
+        class="block text-sm font-medium text-gray-700"
+        >Date Range</label
+      >
+      <select
+        id="dateRangeSelect"
+        [ngModel]="daterange()"
+        (ngModelChange)="daterange.set($event)"
+        class="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-indigo-300">
+        <option value="">All Dates</option>
+        <option value="7">Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="custom">Custom Range</option>
+      </select>
+
+      <div
+        *ngIf="daterange() === 'custom'"
+        class="mt-3">
+        <div class="flex items-center gap-2">
+          <div class="flex-1">
+            <label
+              for="startDate"
+              class="block text-sm font-medium text-gray-700"
+              >Start Date</label
+            >
+            <input
+              type="date"
+              id="startDate"
+              [(ngModel)]="startDate"
+              class="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-indigo-300" />
+          </div>
+          <div class="flex-1">
+            <label
+              for="endDate"
+              class="block text-sm font-medium text-gray-700"
+              >End Date</label
+            >
+            <input
+              type="date"
+              id="endDate"
+              [(ngModel)]="endDate"
+              class="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-indigo-300" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label
+        for="trackingStatusSelect"
+        class="block text-sm font-medium text-gray-700"
+        >Shopify Tracking Status</label
+      >
+      <select
+        id="trackingStatusSelect"
+        [(ngModel)]="shopifyTrackingStatus"
+        class="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-indigo-300">
+        <option value="">All Statuses</option>
+        <option value="Label Printed">Label Printed</option>
+        <option value="In Transit">In Transit</option>
+        <option value="Delivered">Delivered</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mb-4 flex space-x-2">
+    <button
+      class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+      (click)="search()">
+      Search
+    </button>
+    <button
+      class="rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+      (click)="clearSearch()">
+      Clear Filters
+    </button>
+    <button
+      *ngIf="displayExport"
+      class="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+      (click)="exportToExcel()">
+      Export Data
+    </button>
+  </div>
+
+  <!-- Data Table -->
+  <div class="overflow-x-auto rounded-lg bg-white shadow-md">
+    <table class="min-w-full border border-gray-300">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2 text-left text-gray-700">Order Number</th>
+          <th class="px-4 py-2 text-left text-gray-700">Amount</th>
+          <th class="px-4 py-2 text-left text-gray-700">Retailer</th>
+          <th class="px-4 py-2 text-left text-gray-700">Tracking Status</th>
+          <th class="px-4 py-2 text-left text-gray-700">Tracking Number</th>
+          <th class="px-4 py-2 text-left text-gray-700">Shopify Tracking Status</th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="filteredData()?.length">
+        <tr
+          *ngFor="let data of filteredData()"
+          class="border-b hover:bg-gray-100">
+          <td class="px-4 py-2">{{ data.orderNumber }}</td>
+          <td class="px-4 py-2">{{ data.amount | currency }}</td>
+          <td class="px-4 py-2">{{ data.retailerName }}</td>
+          <td class="px-4 py-2">
+            <span
+              class="rounded-md px-2 py-1 text-white"
+              [ngClass]="data.status ? 'bg-green-500' : 'bg-red-500'">
+              {{ data.status ? 'SUCCESS' : 'PENDING' }}
+            </span>
+          </td>
+          <td class="px-4 py-2">
+            <a
+              *ngIf="data.shopifyTrackingNumber"
+              [href]="data.shopifyTrackingLink"
+              target="_new"
+              class="text-blue-600 hover:underline">
+              {{ data.shopifyTrackingNumber }}
+            </a>
+            <span *ngIf="!data.shopifyTrackingNumber"> - </span>
+          </td>
+          <td class="px-4 py-2">{{ data.shopifyTrackingStatus }}</td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="!loading && !filteredData()?.length">
+        <tr>
+          <td
+            colspan="6"
+            class="py-4 text-center text-gray-500">
+            No fulfillment data available
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="loading">
+        <tr>
+          <td
+            colspan="6"
+            class="py-4 text-center text-gray-500">
+            Loading...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

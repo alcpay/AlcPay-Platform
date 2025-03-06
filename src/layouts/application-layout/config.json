@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Staff Menu",
+    "root": "/staff",
+    "role": 2,
+    "items": [
+      {
+        "label": "Sales",
+        "link": "/sales",
+        "icon": "currency_exchange"
+      },
+      {
+        "label": "Retailer Network",
+        "link": "/shipping-rules",
+        "icon": "storefront"
+      },
+      {
+        "label": "Profile",
+        "link": "/profile",
+        "icon": "person"
+      },
+      {
+        "label": "Fulfillments",
+        "link": "/fulfillments",
+        "icon": "local_shipping"
+      },
+      {
+        "label": "Payments",
+        "link": "/payments",
+        "icon": "payment"
+      },
+      {
+        "label": "Brand Profile",
+        "link": "/brand-profile",
+        "icon": "storefront"
+      },
+      {
+        "label": "Shipping Rules",
+        "link": "/location/product-rules",
+        "icon": "list",
+        "children": [
+          {
+            "label": "State Rules",
+            "link": "/location/state-rules"
+          },
+          {
+            "label": "Product Rules",
+            "link": "/location/product-rules"
+          }
+        ]
+      },
+      {
+        "label": "VIP Insights",
+        "link": "/vip-insights",
+        "icon": "bar_chart",
+        "children": [
+          {
+            "label": "Sales",
+            "link": "/vip-insights/sales"
+          },
+          {
+            "label": "Inventory",
+            "link": "/vip-insights/inventory"
+          },
+          {
+            "label": "Returns",
+            "link": "/vip-insights/returns"
+          }
+        ]
+      },
+      {
+        "label": "Marketing Insights",
+        "link": "/marketing-insights",
+        "icon": "analytics",
+        "children": [
+          {
+            "label": "Ad Performance",
+            "link": "/marketing-insights/ad-performance"
+          },
+          {
+            "label": "Ad Depletions",
+            "link": "/marketing-insights/ad-depletion"
+          }
+        ]
+      },
+      {
+        "label": "Setup",
+        "link": "/credentials",
+        "icon": "settings",
+        "children": [
+          {
+            "label": "Store Integration",
+            "link": "/credentials"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Customer Menu",
+    "icon": "menu",
+    "root": "customer",
+    "role": 3,
+    "items": [
+      {
+        "label": "Overview",
+        "link": "/customer",
+        "icon": "dashboard"
+      },
+      {
+        "label": "Sales",
+        "link": "/customer/sales",
+        "icon": "payments"
+      },
+      {
+        "label": "Setup",
+        "link": "/customer/setup",
+        "icon": "settings"
+      }
+    ]
+  }
+]

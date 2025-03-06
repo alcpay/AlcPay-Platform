@@ -1,130 +1,235 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+/**
+ * Styles Test Component
+ *
+ * This component serves as a visual test for the application, showcasing various UI elements
+ * such as typography, buttons, grid layouts, cards, and a modal example.
+ *
+ * import: @alcpay/tailwind
+ * path: themes/switcher.component.ts
+ */
+
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Importing CommonModule for common Angular directives
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+
+import { AuthenticatedUser } from '../../models';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+
+const menuConfigData: { name: string; root: string; role: number; items: { label: string; link: string; icon: string; children?: { label: string; link: string; }[]; }[]; }[] = [
+  {
+    name: 'Customer Menu',
+    root: 'customer',
+    role: 3,
+    items: [
+      {
+        label: 'Overview',
+        link: '/ ',
+        icon: 'dashboard'
+      },
+      {
+        label: 'Orders',
+        link: '/orders',
+        icon: 'payments'
+      },
+      {
+        label: 'Setup',
+        link: '/setup',
+        icon: 'settings'
+      }
+    ]
+  }
+];
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-  <div class="min-h-screen bg-gray-100 p-6">
-  <!-- Header -->
-  <header class="bg-white shadow-md p-4 rounded-md">
-    <h1 class="text-3xl font-semibold text-gray-800">AlcPay Tailwind Validator</h1>
-  </header>
-
-  <!-- Typography Section -->
-  <section class="mt-6 p-6 bg-white rounded-lg shadow-lg">
-    <h2 class="text-lg font-semibold text-gray-700">Typography Examples</h2>
-    <h1 class="text-4xl font-bold text-gray-900 mt-2">Heading 1 (H1)</h1>
-    <h2 class="text-3xl font-semibold text-gray-800 mt-2">Heading 2 (H2)</h2>
-    <h3 class="text-2xl font-medium text-gray-700 mt-2">Heading 3 (H3)</h3>
-    <h4 class="text-xl font-normal text-gray-600 mt-2">Heading 4 (H4)</h4>
-    <h5 class="text-lg font-light text-gray-500 mt-2">Heading 5 (H5)</h5>
-    <p class="text-base text-gray-700 mt-4">
-      This is a paragraph. Tailwind provides extensive typography classes that allow you to style text easily.
-    </p>
-    <p class="text-sm text-gray-500 mt-2">
-      This is a smaller paragraph for subtle text styling.
-    </p>
-  </section>
-
-  <!-- Buttons Section -->
-  <section class="mt-6 p-6 bg-white rounded-lg shadow-lg">
-    <h2 class="text-lg font-semibold text-gray-700">Button Variants</h2>
-    <div class="mt-4 space-x-4">
-      <button class="btn btn-primary">Primary</button>
-      <button class="btn btn-default">Default</button>
-      <button class="btn btn-default btn-outline">Outline</button>
-      <button (click)="increment()" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">Primary</button>
-      <button (click)="increment()" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">Secondary</button>
-      <button (click)="increment()" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition">Success</button>
-      <button (click)="increment()" class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">Warning</button>
-      <button (click)="increment()" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition">Danger</button>
-    </div>
-  </section>
-
-  <!-- Grid Layouts -->
-  <section class="mt-6 p-6 bg-white rounded-lg shadow-lg">
-    <h2 class="text-lg font-semibold text-gray-700">Grid Examples</h2>
-
-    <!-- 2 Column Grid -->
-    <h3 class="text-md font-semibold text-gray-600 mt-4">2 Column Grid</h3>
-    <div class="grid grid-cols-2 gap-4 mt-2">
-      <div class="bg-blue-100 p-4 rounded-md text-center">Item 1</div>
-      <div class="bg-blue-200 p-4 rounded-md text-center">Item 2</div>
-    </div>
-
-    <!-- 3 Column Grid -->
-    <h3 class="text-md font-semibold text-gray-600 mt-6">3 Column Grid</h3>
-    <div class="grid grid-cols-3 gap-4 mt-2">
-      <div class="bg-green-100 p-4 rounded-md text-center">Item 1</div>
-      <div class="bg-green-200 p-4 rounded-md text-center">Item 2</div>
-      <div class="bg-green-300 p-4 rounded-md text-center">Item 3</div>
-    </div>
-
-    <!-- 4 Column Grid -->
-    <h3 class="text-md font-semibold text-gray-600 mt-6">4 Column Grid</h3>
-    <div class="grid grid-cols-4 gap-4 mt-2">
-      <div class="bg-purple-100 p-4 rounded-md text-center">1</div>
-      <div class="bg-purple-200 p-4 rounded-md text-center">2</div>
-      <div class="bg-purple-300 p-4 rounded-md text-center">3</div>
-      <div class="bg-purple-400 p-4 rounded-md text-center">4</div>
-    </div>
-  </section>
-
-  <!-- Cards Section -->
-  <section class="mt-6 p-6 rounded-lg shadow-lg">
-    <h2 class="text-lg font-semibold text-gray-700">Cards</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Basic Card</h3>
-        <p class="text-gray-600 mt-2">A simple card with a shadow.</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Card with Button</h3>
-        <p class="text-gray-600 mt-2">Cards can include buttons and actions.</p>
-        <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">Click Me</button>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h3 class="text-lg font-semibold">Card with Image</h3>
-        <img alt="Analog Logo" class="w-full h-32 object-cover rounded-md mt-2" src="/analog.svg" />
-        <p class="text-gray-600 mt-2">Cards can include images.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Modal Trigger -->
-  <section class="mt-6 p-6 bg-white rounded-lg shadow-lg">
-    <h2 class="text-lg font-semibold text-gray-700">Modal Example</h2>
-    <button (click)="toggleModal()" class="mt-4 bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition">
-      Open Modal
-    </button>
-  </section>
-
-  <!-- Modal -->
-  <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
-      <h2 class="text-lg font-semibold">Modal Window</h2>
-      <p class="text-gray-600 mt-2">This is a sample modal component.</p>
-      <button (click)="toggleModal()" class="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition">
-        Close
-      </button>
-    </div>
-  </div>
-
-</div>
-  `,
+  <div class='container p-8'>
+    <h1>Redirecting</h1>
+  </div>`,
+  providers: [AuthService, UserService],
 })
-export default class HomeComponent {
-  showModal: boolean = false;
+export default class IndexPage implements OnInit, AfterViewInit, OnDestroy {
 
-  toggleModal() {
-    this.showModal = !this.showModal;
+  firstName: string = 'Mac';
+  lastName: string = 'Anderson';
+  firstAndLast: string = this.firstName + ' ' + this.lastName;
+
+  userBrandName: string = '';
+
+  /**
+   * Flag to determine if the user is a customer.
+   */
+  isCustomer: boolean = true;
+
+  /**
+   * Flag to determine if the user is a staff member.
+   */
+  isStaff: boolean = false;
+
+  /**
+   * Flag to determine if the user is a super admin.
+   */
+  isSuperAdmin: boolean = false;
+
+  /**
+   * Flag to determine if the user is a guest.
+   */
+  isGuest: boolean = false;
+
+  /**
+   * Flag to determine if the user is authenticated.
+   */
+  isAuthenticated: boolean = false;
+
+  /**
+   * The current user.
+   */
+  currentUser: AuthenticatedUser | null = null;
+
+  /**
+   * Flag to determine if the mobile sidebar is open.
+   */
+  isMobileSidebarOpen = false;
+
+  /**
+   * The menu configuration.
+   */
+  menuConfig: any = menuConfigData;
+
+  /**
+   * The menu configuration items.
+   */
+  menuConfigItems: any[] = [];
+
+  /**
+   * Flag to determine if the dropdown is open.
+   */
+  isDropdownOpen: boolean = false;
+
+  menuRoot: string = '';
+
+  /**
+   * Constructor for the DefaultLayoutComponent.
+   * @param authService - The authentication service.
+   * @param router - The router service.
+   * @param changeDetectorRef - The ChangeDetectorRef service.
+   */
+  constructor(
+    @Inject(AuthService) private authService: AuthService,
+    @Inject(Router) public router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    // private _location: Location
+  ) {
+    // Subscribe to router events to force update the view on navigation
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.changeDetectorRef.detectChanges(); // Force view update
+      }
+    });
   }
 
-  count = signal(0);
-  increment() {
-    this.count.update((count) => count + 1);
+  /**
+   * Navigates back to the previous page.
+   */
+  backClicked() {
+    console.log('clicked back!');
+    // this._location.back();
   }
+
+  /**
+   * Initializes the component and sets up the user
+   * authentication status and menu configuration.
+   */
+  ngAfterViewInit(): void {
+    this.isMobileSidebarOpen = false;
+  }
+
+  /**
+   * Cleans up the component when it is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.isMobileSidebarOpen = false;
+  }
+
+  /**
+   * Initializes the component and sets up the user
+   * authentication status and menu configuration.
+   */
+  ngOnInit(): void {
+    this.isMobileSidebarOpen = false;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        console.log('NavigationEnd:', event.url);
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+
+    this.authService.currentUser.subscribe((user) => {
+      this.currentUser = user;
+      this.isAuthenticated = !!this.currentUser;
+      this.isCustomer = this.currentUser?.roleId === 3;
+      this.isStaff = this.currentUser?.roleId === 2;
+      this.isSuperAdmin = this.currentUser?.isSuperAdmin || false;
+      this.isGuest = this.currentUser?.roleId === 1;
+      this.userBrandName = `${this.currentUser?.user?.brand?.brandName || ''}`;
+      // Set the menu configuration items.
+      console.log(this.currentUser);
+      this.setMenuConfig();
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+
+  /**
+   * Toggles the mobile sidebar.
+   */
+  toggleMobileSidebar(): void {
+    this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  }
+
+  /**
+   * Logs out the current user and navigates to the login page.
+   */
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/customer/login']);
+  }
+
+  /**
+   * Navigates to the specified link.
+   * @param link - The link to navigate to.
+   */
+  navigateTo(link: string): void {
+    const menuArray = Array.isArray(menuConfigData) ? menuConfigData : [];
+    const currentMenu = menuArray.find((menu) => menu.role === (this.isStaff ? 2 : 3));
+    console.log(currentMenu);
+    console.log(currentMenu?.root + link);
+    this.router.navigate([currentMenu?.root + link]);
+  }
+
+  /**
+   * Sets the menu configuration items based on the user's role.
+   * Filters menuConfigData to only show menu items relevant to the user's role.
+   * Staff (role 2) sees the staff menu, while Customers (role 3) see the customer menu.
+   */
+  private setMenuConfig(): void {
+    const userRole = this.isStaff ? 2 : 3;
+    const menuConfig = menuConfigData.find(menu => menu.role === userRole);
+    this.menuConfigItems = menuConfig ? menuConfig.items : [];
+    this.menuRoot = menuConfig ? menuConfig.root : '';
+  }
+
+  /**
+   * Toggles the dropdown visibility.
+   * @param event - Optional click event to stop propagation
+   */
+  toggleDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
 }

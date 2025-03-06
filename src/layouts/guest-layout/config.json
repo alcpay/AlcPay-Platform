@@ -1,0 +1,19 @@
+{
+  "name": "Staff",
+  "icon": "home",
+  "root": "/staff",
+  "items": [
+    { "label": "Home", "icon": "home", "link": "/" },
+    { "label": "Orders", "icon": "receipt", "link": "/orders" },
+    { "label": "Retailer", "icon": "store", "link": "/retailer" },
+    { "label": "Requested Retailers", "icon": "group", "link": "/requested-retailers" },
+    { "label": "Profile", "icon": "person", "link": "/profile" },
+    { "label": "Fulfillments", "icon": "local_shipping", "link": "/fulfillments" },
+    { "label": "Payments", "icon": "payment", "link": "/payments" },
+    { "label": "Brand Profile", "icon": "business", "link": "/brand-profile" },
+    { "label": "Brands", "icon": "store", "link": "/brands" },
+    { "label": "Staff", "icon": "group", "link": "/staff" },
+    { "label": "Balances", "icon": "account_balance", "link": "/balances" },
+    { "label": "KPIs Across Brands", "icon": "assessment", "link": "/kpis-across-brands" }
+  ]
+}

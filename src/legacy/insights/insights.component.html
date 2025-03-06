@@ -1,0 +1,48 @@
+<div class="insight-wrapper">
+  <div class="line-chart-wrapper grid grid-cols-2 gap-4">
+    <div class="chart-column">
+      <div class="line-chart-filter mt-5">
+        <label
+          for="filterOrder1"
+          class="mr-2 font-bold"
+          >Filter:</label
+        >
+        <select
+          id="filterOrder1"
+          (change)="updateChart($event)"
+          class="rounded border">
+          <option value="retailer">Retailers</option>
+          <option value="brand">Brand</option>
+          <option value="state">State</option>
+        </select>
+      </div>
+      <div class="line-chart">
+        <canvas id="lineChartCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-column">
+      <div class="line-chart-filter mt-5">
+        <label
+          for="filterDollar2"
+          class="mr-2 font-bold"
+          >Filter:</label
+        >
+        <select
+          id="filterDollar2"
+          (change)="updateChartDollarVolume($event)"
+          class="rounded border">
+          <option value="retailer">Retailers</option>
+          <option value="brand">Brand</option>
+          <option value="state">State</option>
+        </select>
+      </div>
+      <div class="line-chart">
+        <canvas id="lineChartCanvasDollarVolume"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="bar-chart mt-5">
+    <canvas id="canvas"></canvas>
+  </div>
+</div>

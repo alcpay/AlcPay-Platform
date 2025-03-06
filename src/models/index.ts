@@ -1,23 +1,381 @@
+
+
 /**
- * Account
- *
- * Represents an account in the system.
+ * InventoryLocation
+ * 
+ * Represents a physical location a brand keeps inventory to be sent
+ * to distributors.
  */
-export class Account {
-  id: string | null = null; // Unique identifier for the account
-  name: string | null = null; // Name of the account holder
-  email: string | null = null; // Email of the account holder
-  password: string | null = null; // Password for the account
-  createdAt: Date | null = null; // Date when the account was created
-  updatedAt: Date | null = null; // Date when the account was last updated
+export enum LocationCode {
+  AL = "Alabama",
+  AK = "Alaska",
+  AZ = "Arizona",
+  AR = "Arkansas",
+  CA = "California",
+  CO = "Colorado",
+  CT = "Connecticut",
+  DE = "Delaware",
+  FL = "Florida",
+  GA = "Georgia",
+  HI = "Hawaii",
+  ID = "Idaho",
+  IL = "Illinois",
+  IN = "Indiana",
+  IA = "Iowa",
+  KS = "Kansas",
+  KY = "Kentucky",
+  LA = "Louisiana",
+  ME = "Maine",
+  MD = "Maryland",
+  MA = "Massachusetts",
+  MI = "Michigan",
+  MN = "Minnesota",
+  MS = "Mississippi",
+  MO = "Missouri",
+  MT = "Montana",
+  NE = "Nebraska",
+  NV = "Nevada",
+  NH = "New Hampshire",
+  NJ = "New Jersey",
+  NM = "New Mexico",
+  NY = "New York",
+  NC = "North Carolina",
+  ND = "North Dakota",
+  OH = "Ohio",
+  OK = "Oklahoma",
+  OR = "Oregon",
+  PA = "Pennsylvania",
+  RI = "Rhode Island",
+  SC = "South Carolina",
+  SD = "South Dakota",
+  TN = "Tennessee",
+  TX = "Texas",
+  UT = "Utah",
+  VT = "Vermont",
+  VA = "Virginia",
+  WA = "Washington",
+  WV = "West Virginia",
+  WI = "Wisconsin",
+  WY = "Wyoming",
+  CUSTOM = "Other/Custom",
+  NONE = "None"
+}
+
+export enum ShippingRegion {
+
+  AL = "Alabama",
+  AK = "Alaska",
+  AZ = "Arizona",
+  AR = "Arkansas",
+  CA = "California",
+  CO = "Colorado",
+  CT = "Connecticut",
+  DE = "Delaware",
+  FL = "Florida",
+  GA = "Georgia",
+  HI = "Hawaii",
+  ID = "Idaho",
+  IL = "Illinois",
+  IN = "Indiana",
+  IA = "Iowa",
+  KS = "Kansas",
+  KY = "Kentucky",
+  LA = "Louisiana",
+  ME = "Maine",
+  MD = "Maryland",
+  MA = "Massachusetts",
+  MI = "Michigan",
+  MN = "Minnesota",
+  MS = "Mississippi",
+  MO = "Missouri",
+  MT = "Montana",
+  NE = "Nebraska",
+  NV = "Nevada",
+  NH = "New Hampshire",
+  NJ = "New Jersey",
+  NM = "New Mexico",
+  NY = "New York",
+  NC = "North Carolina",
+  ND = "North Dakota",
+  OH = "Ohio",
+  OK = "Oklahoma",
+  OR = "Oregon",
+  PA = "Pennsylvania",
+  RI = "Rhode Island",
+  SC = "South Carolina",
+  SD = "South Dakota",
+  TN = "Tennessee",
+  TX = "Texas",
+  UT = "Utah",
+  VT = "Vermont",
+  VA = "Virginia",
+  WA = "Washington",
+  WV = "West Virginia",
+  WI = "Wisconsin",
+  WY = "Wyoming",
+  CUSTOM = "Other/Custom",
+  NONE = "None"
+}
+
+export enum ShippingRegionCode {
+  AL = "Alabama",
+  AK = "Alaska",
+  AZ = "Arizona",
+  AR = "Arkansas",
+  CA = "California",
+  CO = "Colorado",
+  CT = "Connecticut",
+  DE = "Delaware",
+  FL = "Florida",
+  GA = "Georgia",
+  HI = "Hawaii",
+  ID = "Idaho",
+  IL = "Illinois",
+  IN = "Indiana",
+  IA = "Iowa",
+  KS = "Kansas",
+  KY = "Kentucky",
+  LA = "Louisiana",
+  ME = "Maine",
+  MD = "Maryland",
+  MA = "Massachusetts",
+  MI = "Michigan",
+  MN = "Minnesota",
+  MS = "Mississippi",
+  MO = "Missouri",
+  MT = "Montana",
+  NE = "Nebraska",
+  NV = "Nevada",
+  NH = "New Hampshire",
+  NJ = "New Jersey",
+  NM = "New Mexico",
+  NY = "New York",
+  NC = "North Carolina",
+  ND = "North Dakota",
+  OH = "Ohio",
+  OK = "Oklahoma",
+  OR = "Oregon",
+  PA = "Pennsylvania",
+  RI = "Rhode Island",
+  SC = "South Carolina",
+  SD = "South Dakota",
+  TN = "Tennessee",
+  TX = "Texas",
+  UT = "Utah",
+  VT = "Vermont",
+  VA = "Virginia",
+  WA = "Washington",
+  WV = "West Virginia",
+  WI = "Wisconsin",
+  WY = "Wyoming",
+  CUSTOM = "Other/Custom",
+  NONE = "None"
+}
+
+
+export class InventoryItem {
+  id: string | null = null;
+  productId: Product | null = null;
+  warehouseId: Warehouse | null = null;
+  stockCount: number = 0;
+  updatedAt: Date = new Date();
+  createdAt: Date = new Date();
+  isActive: boolean = true;
+  inStock: boolean = true;
+  lowStockWarning: boolean = false;
+  lowStockThreshold: number | null = null;
+}
+
+export enum UserRole {
+  GUEST = 1,
+  STAFF = 2,
+  SUPER_ADMIN = 3,
+  CUSTOMER = 4,
+  PARTNER = 5,
+  API_ONLY = 6,
+  READ_ONLY = 7
+}
+
+/**
+ * Salutation
+ *
+ * Represents different types of salutations that can be used in user profiles.
+ *
+ * import: @alcpay/tailwind
+ * path: themes/switcher.component.ts
+ */
+export enum Salutation {
+  MR = "Mr.", // Salutation for males
+  MRS = "Mrs.", // Salutation for married females
+  MS = "Ms.", // Salutation for females, regardless of marital status
+  DOCTOR = "Dr.", // Salutation for individuals with a doctorate
+  PROFESSOR = "Prof.", // Salutation for professors
+  HONORABLE = "Honorable",
+  NONE = "None" // No salutation
+}
+
+/**
+ * NameSuffix
+ *
+ * Represents different types of name suffixes that can be used in user profiles.
+ *
+ * import: @alcpay/tailwind
+ * path: themes/switcher.component.ts
+ */
+export enum NameSuffix {
+  JR = "Jr.", // Junior
+  SR = "Sr.", // Senior
+  II = "II", // The Second
+  III = "III", // The Third
+  IV = "IV", // The Fourth
+  V = "V", // The Fifth
+  ESQ = "Esq.", // Esquire
+  MD = "M.D.", // Doctor of Medicine
+  PHD = "Ph.D.", // Doctor of Philosophy
+  NONE = "", // No suffix
+}
+
+export class UserProfile {
+  /**
+   * UserProfile
+   *
+   * Represents a user profile in the system.
+   *
+   * import: @alcpay/tailwind
+   * path: themes/switcher.component.ts
+   */
+  fullName: string | null = null; // Full name of the user
+  nickname: string | null = null; // Nickname of the user
+  email: string | null = null; // Email address of the user
+  phone: string | null = null; // Phone number of the user
+  createdAt: Date | null = null; // Date when the user profile was created
+  updatedAt: Date | null = null; // Date when the user profile was last updated
+  lastLoginAt: Date | null = null; // Date when the user last logged in
+  roleId: UserRole | null = null; // Role ID of the user
+  private _passwordHash: string | null = null; // Hashed password of the user
+
+  /**
+   * Sets the user's password securely by hashing it.
+   * @param {string} newPassword - The new password to set.
+   * @param {string | null} oldPassword - The old password for verification (optional).
+   * @throws {Error} If the old password is incorrect.
+   */
+  async setPassword(newPassword: string, oldPassword: string | null = null): Promise<void> {
+    if (oldPassword && !await this.verifyPassword(oldPassword)) {
+      throw new Error('Old password is incorrect.');
+    }
+    this._passwordHash = await this.hashPassword(newPassword);
+  }
+
+  /**
+   * Hashes a password using a secure algorithm.
+   * @param {string} password - The password to hash.
+   * @returns {Promise<string>} The hashed password.
+   */
+  private async hashPassword(password: string): Promise<string> {
+    const salt = await crypto.subtle.generateKey(
+      { name: "PBKDF2", hash: "SHA-256", length: 256 },
+      true,
+      ["deriveBits", "deriveKey"]
+    );
+    const encodedPassword = new TextEncoder().encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encodedPassword);
+    return btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+  }
+
+  /**
+   * Verifies if a given password matches the stored hashed password.
+   * @param {string} password - The password to verify.
+   * @returns {Promise<boolean>} True if the password matches, false otherwise.
+   */
+  private async verifyPassword(password: string): Promise<boolean> {
+    const hashedPassword = await this.hashPassword(password);
+    return this._passwordHash === hashedPassword;
+  }
+}
+
+
+import { CustomerOrg } from  './system.model';
+export * from './system.model';
+
+export class Address {
+  recipient: string | null = null;
+  building: string | null = null;
+  street: string | null = null;
+  street2: string | null = null;
+  city: string | null = null;
+  state: string | null = null;
+  zipCode: string | null = null;
+  locationCode: LocationCode = LocationCode.NONE;
+  deliveryNotes: string | null = null;
+  _orgId: CustomerOrg | null = null;
+}
+
+export class Shipment {
+  id: string | null = null;
+  locationCode: LocationCode = LocationCode.NONE;
+  retailerId: Retailer | string | null = null;
+  orgId: CustomerOrg | null = null;
+  recipientName: string | null = null;
+  shipToStreet: string | null = null;
+  shipToStreet2: string | null = null;
+  shipToCity: string | null = null;
+  shipToRegion: string | null = null;
+  shipToPostalCode: string | null = null;
+  shipToCount: string | null = 'US';
+  items: ShipmentItem | null = null;
+}
+
+export class ShipmentItem {
+  id: string | null = null;
+  orderId: Order | null = null;
+  orderItemId: OrderItem | null = null;
+  productId: Product | null = null;
+  warehouseId: Warehouse | null = null;
+  quantity: number | null = null;
+  shipmentId: Shipment | null = null;
+
+
+
+
+}
+
+export class Warehouse {
+  id: string | null = null;
+  locationCode: LocationCode = LocationCode.NONE;
+  customerId: Customer | null = null;
+  productInventory: ProductInventory[] | null = [];
+
+
+  /**
+   * Enum representing the 50 US states.
+   */
+  
+
+  shippingRegion: USState | null = null; // US State or In Future Possibly a Group of Zip Codes
+
+}
+
+/**
+ * ShippingService
+ *
+ * Represents an shippingService in the system.
+ */
+export class ShippingService {
+  id: string | null = null; // Unique identifier for the shippingService
+  name: string | null = null; // Name of the shippingService holder
+  email: string | null = null; // Email of the shippingService holder
+  password: string | null = null; // Password for the shippingService
+  createdAt: Date | null = null; // Date when the shippingService was created
+  updatedAt: Date | null = null; // Date when the shippingService was last updated
 
   constructor(
-    id?: string | null, // Optional parameter for account ID
-    name?: string | null, // Optional parameter for account holder's name
-    email?: string | null, // Optional parameter for account holder's email
-    password?: string | null, // Optional parameter for account password
-    createdAt?: Date | null, // Optional parameter for account creation date
-    updatedAt?: Date | null // Optional parameter for account last update date
+    id?: string | null, // Optional parameter for shippingService ID
+    name?: string | null, // Optional parameter for shippingService holder's name
+    email?: string | null, // Optional parameter for shippingService holder's email
+    password?: string | null, // Optional parameter for shippingService password
+    createdAt?: Date | null, // Optional parameter for shippingService creation date
+    updatedAt?: Date | null // Optional parameter for shippingService last update date
   ) {
     this.id = id ?? null; // Assigns the provided ID or null if undefined
     this.name = name ?? null; // Assigns the provided name or null if undefined
@@ -28,118 +386,123 @@ export class Account {
   }
 
   /**
-   * Retrieves the account by ID.
-   * @param {string} id - The ID of the account.
-   * @returns {Promise<Account | null>} The account instance or null if not found.
+   * Retrieves the shippingService by ID.
+   * @param {string} id - The ID of the shippingService.
+   * @returns {Promise<ShippingService | null>} The shippingService instance or null if not found.
    */
-  async getAccountById(id: string): Promise<Account | null> {
-    // Checks if the current account's ID matches the provided ID
-    return this.id === id ? this : null; // Returns the account instance if IDs match, otherwise null
+  async getShippingServiceById(id: string): Promise<ShippingService | null> {
+    // Checks if the current shippingService's ID matches the provided ID
+    return this.id === id ? this : null; // Returns the shippingService instance if IDs match, otherwise null
   }
 }
 
 /**
- * AccountRating
+ * ShippingServiceRating
  *
- * Represents a rating for an account.
+ * Represents a rating for an shippingService.
  */
-export class AccountRating {
-  accountId: string | null = null; // Unique identifier for the account
-  rating: number | null = null; // Rating value for the account
+export class ShippingServiceRating {
+  shippingServiceId: string | null = null; // Unique identifier for the shippingService
+  rating: number | null = null; // Rating value for the shippingService
 
-  constructor(accountId?: string | null, rating?: number | null) {
-    this.accountId = accountId ?? null; // Assigns the provided account ID or null if undefined
+  constructor(shippingServiceId?: string | null, rating?: number | null) {
+    this.shippingServiceId = shippingServiceId ?? null; // Assigns the provided shippingService ID or null if undefined
     this.rating = rating ?? null; // Assigns the provided rating or null if undefined
   }
 
   /**
-   * Retrieves the account rating by account ID.
-   * @param {string} accountId - The account ID.
-   * @returns {Promise<AccountRating | null>} The account rating instance or null if not found.
+   * Retrieves the shippingService rating by shippingService ID.
+   * @param {string} shippingServiceId - The shippingService ID.
+   * @returns {Promise<ShippingServiceRating | null>} The shippingService rating instance or null if not found.
    */
-  async getAccountRatingByAccountId(accountId: string): Promise<AccountRating | null> {
-    // Checks if the current account rating's account ID matches the provided account ID
-    return this.accountId === accountId ? this : null; // Returns the account rating instance if IDs match, otherwise null
+  async getByShippingServiceId(shippingServiceId: string): Promise<ShippingServiceRating | null> {
+    // Checks if the current shippingService rating's shippingService ID matches the provided shippingService ID
+    return this.shippingServiceId === shippingServiceId ? this : null; // Returns the shippingService rating instance if IDs match, otherwise null
   }
 }
 
 /**
- * AccountState
+ * ShippingServiceState
  *
- * Represents the state of an account.
+ * Represents the state of an shippingService.
  */
-export class AccountState {
-  accountId: string | null = null; // Unique identifier for the account
-  state: string | null = null; // State of the account
+export class ShippingServiceState {
+  shippingServiceId: string | null = null; // Unique identifier for the shippingService
+  state: string | null = null; // State of the shippingService
 
-  constructor(accountId?: string | null, state?: string | null) {
-    this.accountId = accountId ?? null; // Assigns the provided account ID or null if undefined
+  constructor(shippingServiceId?: string | null, state?: string | null) {
+    this.shippingServiceId = shippingServiceId ?? null; // Assigns the provided shippingService ID or null if undefined
     this.state = state ?? null; // Assigns the provided state or null if undefined
   }
 
   /**
-   * Retrieves the account state by account ID.
-   * @param {string} accountId - The account ID.
-   * @returns {Promise<AccountState | null>} The account state instance or null if not found.
+   * Retrieves the shippingService state by shippingService ID.
+   * @param {string} shippingServiceId - The shippingService ID.
+   * @returns {Promise<ShippingServiceState | null>} The shippingService state instance or null if not found.
    */
-  async getAccountStateByAccountId(accountId: string): Promise<AccountState | null> {
-    // Checks if the current account state's account ID matches the provided account ID
-    return this.accountId === accountId ? this : null; // Returns the account state instance if IDs match, otherwise null
+  async getStateByShippingServiceId(shippingServiceId: string): Promise<ShippingServiceState | null> {
+    // Checks if the current shippingService state's shippingService ID matches the provided shippingService ID
+    return this.shippingServiceId === shippingServiceId ? this : null; // Returns the shippingService state instance if IDs match, otherwise null
   }
 }
 
 /**
  * Balance
  *
- * Represents the balance of an account.
+ * Represents the balance of an shippingService.
  */
 export class Balance {
-  accountId: string | null = null; // Unique identifier for the account
+  shippingServiceId: string | null = null; // Unique identifier for the shippingService
   amount: number | null = null; // Amount of the balance
   currency: string | null = null; // Currency of the balance
 
-  constructor(accountId?: string | null, amount?: number | null, currency?: string | null) {
-    this.accountId = accountId ?? null; // Assigns the provided account ID or null if undefined
+  constructor(shippingServiceId?: string | null, amount?: number | null, currency?: string | null) {
+    this.shippingServiceId = shippingServiceId ?? null; // Assigns the provided shippingService ID or null if undefined
     this.amount = amount ?? null; // Assigns the provided amount or null if undefined
     this.currency = currency ?? null; // Assigns the provided currency or null if undefined
   }
 
   /**
-   * Retrieves the balance by account ID.
-   * @param {string} accountId - The account ID.
+   * Retrieves the balance by shippingService ID.
+   * @param {string} shippingServiceId - The shippingService ID.
    * @returns {Promise<Balance | null>} The balance instance or null if not found.
    */
-  async getBalanceByAccountId(accountId: string): Promise<Balance | null> {
-    // Checks if the current balance's account ID matches the provided account ID
-    return this.accountId === accountId ? this : null; // Returns the balance instance if IDs match, otherwise null
+  async getBalanceByShippingServiceId(shippingServiceId: string): Promise<Balance | null> {
+    // Checks if the current balance's shippingService ID matches the provided shippingService ID
+    return this.shippingServiceId === shippingServiceId ? this : null; // Returns the balance instance if IDs match, otherwise null
   }
 }
 
 /**
- * Brands
- *
- * Represents a brand in the system.
+ * Represents a junction between User and Brand entities
+ * Used to manage user-brand relationships and permissions
  */
-export class Brands {
-  id: string | null = null; // Unique identifier for the brand
-  name: string | null = null; // Name of the brand
-  logoUrl: string | null = null; // URL of the brand's logo
+export class BrandUser {
+  user?: User | null = null // Foreign key reference to User
+  brand?: Brand | null = null // Foreign key reference to Brand
+  isActive?: boolean | null = true // Indicates if this relationship is active
+  isDefault?: boolean | null = false // Indicates if this is the user's primary brand
+  createdAt?: string | null = new Date().toISOString() // When this relationship was created
+  updatedAt?: string | null = new Date().toISOString() // When this relationship was last updated
+}
 
-  constructor(id?: string | null, name?: string | null, logoUrl?: string | null) {
-    this.id = id ?? null; // Assigns the provided brand ID or null if undefined
-    this.name = name ?? null; // Assigns the provided brand name or null if undefined
-    this.logoUrl = logoUrl ?? null; // Assigns the provided logo URL or null if undefined
-  }
-
-  /**
-   * Retrieves the brand by ID.
-   * @param {string} id - The ID of the brand.
-   * @returns {Promise<Brands | null>} The brand instance or null if not found.
-   */
-  async getBrandById(id: string): Promise<Brands | null> {
-    // Checks if the current brand's ID matches the provided ID
-    return this.id === id ? this : null; // Returns the brand instance if IDs match, otherwise null
-  }
+/**
+ * Brand
+ *
+ * Represents a brand (customer account)in the system.
+ */
+export class Brand {
+  id?: number | null = null // Unique identifier for the brand
+  brandName?: string | null = null // Name of the brand
+  brandId?: string | null = null // Unique identifier for the brand
+  name?: string | null = null // Name of the brand
+  website?: string | null = null // Brand's website URL
+  storeName?: string | null = null // Name of the physical/online store
+  image?: string | null = null // Brand logo/image URL
+  isActive?: boolean | null = null // Indicates if brand is currently active
+  createdAt?: string | null = new Date().toISOString() // When brand was created
+  updatedAt?: string | null = new Date().toISOString() // When brand was last updated
+  users?: BrandUser[] | null = [] // List of users associated with this brand
 }
 
 /**
@@ -177,27 +540,27 @@ export class Fulfillment {
 }
 
 /**
- * FulfillmentAccount
+ * FulfillmentShippingService
  *
- * Represents a fulfillment account in the system.
+ * Represents a fulfillment shippingService in the system.
  */
-export class FulfillmentAccount {
+export class FulfillmentShippingService {
   fulfillmentId: string | null = null; // Unique identifier for the fulfillment
-  accountId: string | null = null; // Unique identifier for the account
+  shippingServiceId: string | null = null; // Unique identifier for the shippingService
 
-  constructor(fulfillmentId?: string | null, accountId?: string | null) {
+  constructor(fulfillmentId?: string | null, shippingServiceId?: string | null) {
     this.fulfillmentId = fulfillmentId ?? null; // Assigns the provided fulfillment ID or null if undefined
-    this.accountId = accountId ?? null; // Assigns the provided account ID or null if undefined
+    this.shippingServiceId = shippingServiceId ?? null; // Assigns the provided shippingService ID or null if undefined
   }
 
   /**
-   * Retrieves the fulfillment account by fulfillment ID.
+   * Retrieves the fulfillment shippingService by fulfillment ID.
    * @param {string} fulfillmentId - The fulfillment ID.
-   * @returns {Promise<FulfillmentAccount | null>} The fulfillment account instance or null if not found.
+   * @returns {Promise<FulfillmentShippingService | null>} The fulfillment shippingService instance or null if not found.
    */
-  async getFulfillmentAccountByFulfillmentId(fulfillmentId: string): Promise<FulfillmentAccount | null> {
-    // Checks if the current fulfillment account's fulfillment ID matches the provided fulfillment ID
-    return this.fulfillmentId === fulfillmentId ? this : null; // Returns the fulfillment account instance if IDs match, otherwise null
+  async getFulfillmentShippingServiceByFulfillmentId(fulfillmentId: string): Promise<FulfillmentShippingService | null> {
+    // Checks if the current fulfillment shippingService's fulfillment ID matches the provided fulfillment ID
+    return this.fulfillmentId === fulfillmentId ? this : null; // Returns the fulfillment shippingService instance if IDs match, otherwise null
   }
 }
 
@@ -232,41 +595,28 @@ export class LocationMap {
   }
 }
 
+/**
+ * Payout
+ * 
+ * Represents a payout in the system.
+ */
 export class Payout {
-  /**
-   * The unique identifier for the payout
-   */
-  id: number | null = null; // Unique identifier for the payout
-  /**
-   * The order number for the payout
-   */
+  id: string | null = null; // Unique identifier for the payout
   orderNumber: string = ''; // Order number associated with the payout
-  /**
-   * The amount for the payout
-   */
   amount: number = 0; // Amount of the payout
-  /**
-   * The destination for the payout
-   */
   destination: string = ''; // Destination where the payout is sent
-  /**
-   * The retailer name for the payout
-   */
   retailerName: string = ''; // Name of the retailer associated with the payout
-  /**
-   * The status for the payout
-   */
   status: boolean = false; // Status indicating if the payout is active or not
 
   constructor(
-    id?: number | null, // Optional parameter for payout ID
+    id?: string | null, // Optional parameter for payout ID
     orderNumber?: string, // Optional parameter for order number
     amount?: number, // Optional parameter for payout amount
     destination?: string, // Optional parameter for payout destination
     retailerName?: string, // Optional parameter for retailer name
     status?: boolean, // Optional parameter for payout status
   ) {
-    this.id = id ?? null; // Assigns the provided payout ID or null if undefined
+    this.id = id ? String(id) : null; // Converts the provided payout ID to a string or assigns null if falsy
     this.orderNumber = orderNumber ?? ''; // Assigns the provided order number or empty string if undefined
     this.amount = amount ?? 0; // Assigns the provided amount or zero if undefined
     this.destination = destination ?? ''; // Assigns the provided destination or empty string if undefined
@@ -281,10 +631,15 @@ export class Payout {
    */
   async getPayoutById(id: number): Promise<Payout | null> {
     // Checks if the current payout's ID matches the provided ID
-    return this.id === id ? this : null; // Returns the payout instance if IDs match, otherwise null
+    return this.id === String(id) ? this : null; // Converts the provided ID to a string for comparison and returns the payout instance if IDs match, otherwise null
   }
 }
 
+/**
+ * ProductLocationMap
+ * 
+ * Represents a product location map in the system.
+ */
 export class ProductLocationMap {
   /**
    * The unique identifier for the product location map
@@ -320,7 +675,7 @@ export class ProductLocationMap {
   }
 }
 
-class Product {
+export class Product {
   constructor(private id: string) {} // Constructor with a private ID parameter
 
   async getProduct(): Promise<string> {
@@ -329,7 +684,7 @@ class Product {
   }
 }
 
-class Customer {
+export class Customer {
   constructor(private id: string) {} // Constructor with a private ID parameter
 
   async getCustomer(): Promise<string> {
@@ -338,7 +693,7 @@ class Customer {
   }
 }
 
-class Retailer {
+export class Retailer {
   constructor(private id: string) {} // Constructor with a private ID parameter
 
   async getRetailer(): Promise<string> {
@@ -352,11 +707,11 @@ class Retailer {
  * 
  * Represents a shipping rule in the system.
  */
-class ShippingRule {
-  id: number | null = null; // Unique identifier for the shipping rule
-  productId: number | null = null; // Unique identifier for the product associated with the shipping rule
-  retailerId: number | null = null; // Unique identifier for the retailer associated with the shipping rule
-  inventoryLocationId: number | null = null; // Unique identifier for the inventory location associated with the shipping rule
+export class ShippingRule {
+  id: string | null = null; // Unique identifier for the shipping rule
+  productId: string | null = null; // Unique identifier for the product associated with the shipping rule
+  retailerId: string | null = null; // Unique identifier for the retailer associated with the shipping rule
+  inventoryLocationId: string | null = null; // Unique identifier for the inventory location associated with the shipping rule
   shippingRegions: string[] | null = null; // List of shipping regions applicable for the shipping rule
   shippingCountry: string | null = 'US'; // Default shipping country for the shipping rule
   commissionPercentage: number = 0.050; // Commission percentage for the shipping rule
@@ -365,10 +720,10 @@ class ShippingRule {
   updatedAt: Date | null = null; // Date when the shipping rule was last updated
 
   constructor(
-    id?: number | null, // Optional parameter for shipping rule ID
-    productId?: number | null, // Optional parameter for product ID
-    retailerId?: number | null, // Optional parameter for retailer ID
-    inventoryLocationId?: number | null, // Optional parameter for inventory location ID
+    id?: string | null, // Optional parameter for shipping rule ID
+    productId?: string | null, // Optional parameter for product ID
+    retailerId?: string | null, // Optional parameter for retailer ID
+    inventoryLocationId?: string | null, // Optional parameter for inventory location ID
     shippingRegions?: string[] | null, // Optional parameter for list of shipping regions
     shippingCountry?: string | null, // Optional parameter for shipping country
     commissionPercentage?: number | null, // Optional parameter for commission percentage
@@ -396,16 +751,16 @@ class ShippingRule {
   async getShippingRuleById(id: number): Promise<ShippingRule | null> {
     // Asynchronously retrieves the shipping rule by ID
     const shippingRule: ShippingRule = await this.getShippingRule(); // Retrieves the current shipping rule instance
-    if (shippingRule.id === id) { // Checks if the shipping rule's ID matches the provided ID
+    if (shippingRule.id !== null && shippingRule.id === id.toString()) { // Checks if the shipping rule's ID is not null and matches the provided ID
       return shippingRule; // Returns the shipping rule instance if IDs match
     }
     return null; // Returns null if IDs do not match
   }
 
-  async getShippingRuleByProductId(productId: number): Promise<ShippingRule | null> {
+  async getShippingRuleByProductId(productId: string): Promise<ShippingRule | null> {
     // Asynchronously retrieves the shipping rule by product ID
     const shippingRule: ShippingRule = await this.getShippingRule(); // Retrieves the current shipping rule instance
-    if (shippingRule.productId === productId) { // Checks if the shipping rule's product ID matches the provided product ID
+    if (shippingRule.productId !== null && shippingRule.productId === productId) { // Checks if the shipping rule's product ID is not null and matches the provided product ID
       return shippingRule; // Returns the shipping rule instance if product IDs match
     }
     return null; // Returns null if product IDs do not match
@@ -417,47 +772,54 @@ class ShippingRule {
  * 
  * Represents a user in the system.
  */
-class User {
+export class User {
   id: number | null = null; // Unique identifier for the user
-  roleId: number | null = null; // Unique identifier for the user's role
+  username: string | null = null; // Name of the user
   email: string | null = null; // Email address of the user
+  contact: string | null = null; // Contact number of the user
+  isActive: boolean = false; // Indicates if the user is active
+  roleId: number | null = null; // Role identifier for the user
+  brand: Brand | null = null; // Associated brand of the user
   firstName: string | null = null; // First name of the user
   lastName: string | null = null; // Last name of the user
-  customerIds: number[] | null = null; // List of customer IDs associated with the user
-  isActive: boolean | null = null; // Status indicating if the user is active
-  isEmailVerified: boolean | null = null; // Status indicating if the user's email is verified
-  isPhoneVerified: boolean | null = null; // Status indicating if the user's phone is verified
 
-  constructor(
-    id?: number | null, // Optional parameter for user ID
-    roleId?: number | null, // Optional parameter for role ID
-    email?: string | null, // Optional parameter for email address
-    firstName?: string | null, // Optional parameter for first name
-    lastName?: string | null, // Optional parameter for last name
-    customerIds?: number[] | null, // Optional parameter for list of customer IDs
-    isActive?: boolean | null, // Optional parameter for user status
-    isEmailVerified?: boolean | null, // Optional parameter for email verification status
-    isPhoneVerified?: boolean | null, // Optional parameter for phone verification status
-  ) {
-    this.id = id ?? null; // Assigns the provided user ID or null if undefined
-    this.roleId = roleId ?? null; // Assigns the provided role ID or null if undefined
-    this.email = email ?? null; // Assigns the provided email address or null if undefined
-    this.firstName = firstName ?? null; // Assigns the provided first name or null if undefined
-    this.lastName = lastName ?? null; // Assigns the provided last name or null if undefined
-    this.customerIds = customerIds ?? null; // Assigns the provided list of customer IDs or null if undefined
-    this.isActive = isActive ?? null; // Assigns the provided status or null if undefined
-    this.isEmailVerified = isEmailVerified ?? null; // Assigns the provided email verification status or null if undefined
-    this.isPhoneVerified = isPhoneVerified ?? null; // Assigns the provided phone verification status or null if undefined
-  }
-
-  async getUser(): Promise<User> {
-    // Asynchronously retrieves the user instance
-    return this; // Returns the current user instance
+  getUser(): Promise<User> {
+    return new Promise((resolve, reject) => {
+      if (!this.id) {
+        reject(new Error('User not found')); // Returns an error if the user is not found
+      }
+      resolve(this); // Returns the current user instance
+    }); // Returns the current user instance
   }
 }
 
-class Order {
-  id: number | null = null; // Unique identifier for the order
+/**
+ * AuthenticatedUser
+ * 
+ * Represents an authenticated user in the system.
+ */
+export class AuthenticatedUser {
+  accessToken: string | null = null; // JWT access token for the authenticated user
+  user: User | null = null; // User object for the authenticated user
+  roleId: number | null = null; // Role identifier for the authenticated user
+  isSuperAdmin: boolean = false; // Indicates if the user has super admin privileges
+  getAuthenticatedUser(): Promise<AuthenticatedUser> {
+    return new Promise((resolve, reject) => {
+      if (!this.accessToken) {
+        reject(new Error('Authenticated user not found')); // Returns an error if the authenticated user is not found
+      }
+      resolve(this); // Returns the current authenticated user instance
+    }); // Returns the current authenticated user instance
+  }
+}
+
+/**
+ * Order
+ * 
+ * Represents an order in the system.
+ */
+export class Order {
+  id: string | null = null; // Unique identifier for the order
   customerId: number | null = null; // Unique identifier for the customer associated with the order
   retailerId: number | null = null; // Unique identifier for the retailer associated with the order
   orderNumber: string | null = null; // Order number for the order
@@ -488,7 +850,7 @@ class Order {
     orderShippingAddress?: string | null, // Optional parameter for shipping address
     orderBillingAddress?: string | null, // Optional parameter for billing address
   ) {
-    this.id = id ?? null; // Assigns the provided order ID or null if undefined
+    this.id = id?.toString() ?? null; // Converts the provided order ID to a string or assigns null if undefined
     this.customerId = customerId ?? null; // Assigns the provided customer ID or null if undefined
     this.retailerId = retailerId ?? null; // Assigns the provided retailer ID or null if undefined
     this.orderNumber = orderNumber ?? null; // Assigns the provided order number or null if undefined
@@ -510,7 +872,13 @@ class Order {
   }
 }
 
-class OrderItem {
+export class OrderItem {
+  
+  productId: Product |null = null;
+  orderId: Order | null = null;
+  shipToRegionCode: ShippingRegion
+
+
   constructor(private id: string) {} // Constructor with a private ID parameter
 
   async getOrderItem(): Promise<OrderItem> {
@@ -519,11 +887,11 @@ class OrderItem {
   }
 }
 
-class ShopifyStoreConnection {
+export class ShopifyStoreConnection {
   /**
    * The unique identifier for the Shopify store connection
    */
-  id: number | null = null; // Unique identifier for the Shopify store connection
+  id: string | null = null; // Unique identifier for the Shopify store connection
   /**
    * The unique identifier for the Shopify store
    */
@@ -566,7 +934,7 @@ class ShopifyStoreConnection {
     shopifyStoreApiSecretKey?: string | null, // Optional parameter for Shopify store API secret key
     isConnected?: boolean | null // Optional parameter for connection status
   ) {
-    this.id = id ?? null; // Assigns the provided Shopify store connection ID or null if undefined
+    this.id = id !== undefined && id !== null ? id.toString() : null; // Converts the provided ID to a string or assigns null if undefined or null
     this.shopifyStoreId = shopifyStoreId ?? null; // Assigns the provided Shopify store ID or null if undefined
     this.shopifyStoreName = shopifyStoreName ?? null; // Assigns the provided Shopify store name or null if undefined
     this.shopifyStoreUrl = shopifyStoreUrl ?? null; // Assigns the provided Shopify store URL or null if undefined
@@ -580,7 +948,7 @@ class ShopifyStoreConnection {
    * Retrieves the Shopify store connection ID.
    * @returns {Promise<number | null>} The Shopify store connection ID.
    */
-  async getShoppifyStoreConnection(): Promise<number | null> {
+  async getShoppifyStoreConnection(): Promise<string | null> {
     // Asynchronously retrieves the Shopify store connection ID
     return this.id; // Returns the Shopify store connection ID
   }
@@ -600,6 +968,3 @@ class ShopifyStoreConnection {
     return true; // Returns true indicating the disconnection was successful
   }
 }
-
-// Exporting classes for external use
-export { Product, Customer, Retailer, ShippingRule, User, Order, OrderItem, ShopifyStoreConnection };

@@ -1,0 +1,26 @@
+/* Material Icons */
+@import 'material-icons/iconfont/outlined.css';
+@import 'material-icons/iconfont/filled.css';
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@layer theme {
+:root {
+        --font-family-plex: 'IBM Plex Sans', sans-serif;
+        --font-family-plex-mono: 'IBM Plex Mono', monospace;
+        --font-family-poppins: 'Poppins', sans-serif;
+        --icon-font-family: 'Material Icons';
+        --icon-outlined-font-family: 'Material Icons Outlined';
+        --font-family-sans: var(--font-family-plex), sans-serif;
+        --font-family-display: var(--font-family-poppins), sans-serif;
+        --font-family-mono: var(--font-family-plex-mono), monospace;
+        --base-font-family: var(--font-family-plex-sans);
+        --webkit-font-smoothing: antialiased;
+        --moz-osx-font-smoothing: grayscale;
+        --optimize-legibility: optimizeLegibility;
+        --optimize-speed: optimizeSpeed;
+    }
+}

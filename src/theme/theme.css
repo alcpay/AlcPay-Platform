@@ -1,0 +1,16 @@
+/**
+ * @file src/theme/theme.css
+ *
+ * @brief Tailwind CSS theme styles
+ *
+ * @author Mac Anderson
+ * ------------------------------------------------------------
+ */
+/* Tailwind directives */
+@layer theme {
+    /* @import 'base.css'; */
+    @import 'fonts.css';
+    @import 'typography.css';
+    @import 'buttons.css';
+    @import 'icons.css';
+}

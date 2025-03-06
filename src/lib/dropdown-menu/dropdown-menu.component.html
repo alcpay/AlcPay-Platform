@@ -1,0 +1,67 @@
+<!--
+  Configurable Dropdown Menu Component
+  Displays a button with optional icon and label that toggles a dropdown menu
+  Menu items are configured via the component's inputs
+-->
+<div class="relative">
+  <button
+    type="button"
+    class="btn flex items-center gap-2 p-2"
+    [attr.aria-expanded]="isOpen"
+    [attr.aria-haspopup]="true"
+    (click)="toggleDropdown()">
+
+    <!-- Optional Icon -->
+    <span
+      *ngIf="icon"
+      class="material-symbols-outlined"
+      aria-hidden="true">
+      {{icon}}
+    </span>
+
+    <!-- Label -->
+    <span>{{label}}</span>
+
+    <!-- Dropdown Arrow -->
+    <svg
+      class="size-5 text-white"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true">
+      <path
+        fill-rule="evenodd"
+        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+        clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <div
+    *ngIf="isOpen"
+    class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
+    role="menu">
+
+    <a
+      *ngFor="let item of items"
+      [routerLink]="item.link"
+      routerLinkActive="{{item.activeClass || 'bg-gray-100'}}"
+      [class]="'block flex items-center px-4 py-2 text-sm ' +
+        (item.hoverTextClass || 'text-gray-700') + ' ' +
+        (item.hoverClass || 'hover:bg-gray-100')"
+      [class.disabled]="item.isDisabled"
+      [class.hidden]="item.isVisible === false"
+      [class.text-gray-900]="item.activeTextClass"
+      role="menuitem"
+      (click)="handleItemClick(item)">
+
+      <!-- Optional Item Icon -->
+      <span
+        *ngIf="item.icon"
+        class="material-symbols-outlined mr-2">
+        {{item.icon}}
+      </span>
+
+      {{item.label}}
+    </a>
+  </div>
+</div>

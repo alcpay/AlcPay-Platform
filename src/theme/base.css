@@ -1,0 +1,28 @@
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, :before, :after, html, body {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+    color: var(--text-color-base);
+    background-color: var(--bg-light);
+    line-height: var(--line-height-base);
+    -webkit-font-smoothing: var(--webkit-font-smoothing);
+    -moz-osx-font-smoothing: var(--moz-osx-font-smoothing);
+    text-rendering: var(--optimize-legibility);
+}
+
+html, body {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+    color: var(--text-color-base);
+    background-color: var(--bg-light);
+    -webkit-font-smoothing: var(--webkit-font-smoothing);
+    -moz-osx-font-smoothing: var(--moz-osx-font-smoothing);
+    text-rendering: var(--optimize-legibility);
+    line-height: var(--line-height-base);
+}

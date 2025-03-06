@@ -1,0 +1,438 @@
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <page-heading title="Shipping Rules"></page-heading>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="mb-8 border-b border-gray-200">
+    <nav
+      class="-mb-px flex space-x-8"
+      aria-label="Tabs">
+      <button
+        *ngFor="let tab of tabs; let i = index"
+        (click)="selectTab(i)"
+        [ngClass]="{
+          'border-indigo-500 text-indigo-600': selectedTabIndex === i,
+          'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700': selectedTabIndex !== i,
+          'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium': true,
+        }"
+        aria-current="page">
+        {{ tab.label }}
+      </button>
+    </nav>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="mt-4">
+    <ng-container *ngTemplateOutlet="tabs[selectedTabIndex].content"></ng-container>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            #
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            Shopify Location Name
+            <button
+              class="ml-1 text-gray-400 hover:text-gray-600"
+              (click)="toggleSort()">
+              <i class="fa fa-fw fa-sort"></i>
+            </button>
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            Address
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            Shopify Location ID
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            Retailer Name
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <tr *ngFor="let loc of locationTableData; let i = index">
+          <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ i + 1 }}</td>
+          <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">{{ loc.name }}</td>
+          <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ loc.address1 }}, {{ loc.city }}</td>
+          <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ loc.id }}</td>
+          <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ loc.retailer ? loc.retailer : 'NA' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Create Product Rule Modal -->
+<ng-template
+  #statecontent
+  let-modal>
+  <div class="relative mx-auto max-w-lg rounded-lg bg-white shadow-xl">
+    <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Create Product Rule</h3>
+      <button
+        type="button"
+        class="absolute right-4 top-4 text-gray-400 hover:text-gray-500"
+        (click)="modal.close('Close Clicked')">
+        <span class="sr-only">Close</span>
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form
+      [formGroup]="stateForm"
+      novalidate
+      (ngSubmit)="saveState()">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="space-y-6">
+          <!-- Product Select -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700"> Product <span class="text-red-500">*</span> </label>
+            <select
+              title="Select Product"
+              class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              formControlName="productId"
+              (change)="
+                selectProduct($event);
+                getStatesForSpecificProductAndLocation(
+                  stateForm.get('productId').value,
+                  stateForm.get('locationId').value
+                )
+              ">
+              <option value="">Select Product</option>
+              <option
+                *ngFor="let product of products"
+                [value]="product.id">
+                {{ product.title }}
+              </option>
+            </select>
+            <p
+              *ngIf="
+                stateForm.get('productId').invalid && (stateForm.value.submitted || stateForm.get('productId').touched)
+              "
+              class="mt-2 text-sm text-red-600">
+              Product is Required.
+            </p>
+          </div>
+
+          <!-- Location Select -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Shopify Location <span class="text-red-500">*</span>
+            </label>
+            <select
+              title="Select Shopify Location"
+              [ngClass]="{ 'cursor-not-allowed opacity-50': !stateForm.get('productId').valid }"
+              class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              formControlName="locationId"
+              (change)="
+                selected($event);
+                getStatesForSpecificProductAndLocation(
+                  stateForm.get('productId').value,
+                  stateForm.get('locationId').value
+                )
+              ">
+              <option value="">Select Shopify Location</option>
+              <option
+                *ngFor="let loc of locationData"
+                [value]="loc.id">
+                {{ loc.name }}⭐⭐⭐⭐⭐
+              </option>
+            </select>
+            <p
+              *ngIf="
+                stateForm.get('locationId').invalid &&
+                (stateForm.value.submitted || stateForm.get('locationId').touched)
+              "
+              class="mt-2 text-sm text-red-600">
+              Shopify Location is Required.
+            </p>
+          </div>
+
+          <!-- State Select -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700"> State <span class="text-red-500">*</span> </label>
+            <ng-multiselect-dropdown
+              formControlName="stateId"
+              [settings]="AddStateRuleDropDownSetting"
+              [placeholder]="'States'"
+              [data]="allStatesList"
+              [(ngModel)]="allSelectedStates"
+              (onSelect)="onStateSelect($event)"
+              (onSelectAll)="onAllStatesSelect($event)"
+              [ngClass]="{
+                'cursor-not-allowed opacity-50':
+                  !stateForm.get('locationId').valid || !stateForm.get('productId').valid,
+              }"
+              class="mt-1">
+            </ng-multiselect-dropdown>
+            <p
+              *ngIf="stateForm.get('stateId').invalid"
+              class="mt-2 text-sm text-red-600">
+              State is Required.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-x-3 bg-gray-50 px-4 py-3 text-right sm:px-6">
+        <button
+          type="button"
+          class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          (click)="modal.close('Close Clicked')">
+          Close
+        </button>
+        <button
+          type="submit"
+          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Create Zip Rule Modal -->
+<ng-template
+  #zipcontent
+  let-modal>
+  <div class="relative mx-auto max-w-lg rounded-lg bg-white shadow-xl">
+    <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Create Zip Rule</h3>
+      <button
+        type="button"
+        class="absolute right-4 top-4 text-gray-400 hover:text-gray-500"
+        (click)="modal.close('Close Clicked')">
+        <span class="sr-only">Close</span>
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form
+      [formGroup]="zipForm"
+      novalidate
+      (ngSubmit)="saveZip()">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="space-y-6">
+          <!-- Min Zip -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Minimum Zip</label>
+            <input
+              type="text"
+              title="Minimum Zip"
+              placeholder="Enter minimum zip"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              formControlName="minZip" />
+            <p
+              *ngIf="zipForm.get('minZip').invalid && (zipForm.value.submitted || zipForm.get('minZip').touched)"
+              class="mt-2 text-sm text-red-600">
+              Minimum zip is Required and maximum length not greater than 5.
+            </p>
+          </div>
+
+          <!-- Max Zip -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Maximum Zip</label>
+            <input
+              type="text"
+              title="Maximum Zip"
+              placeholder="Enter maximum zip"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              formControlName="maxZip" />
+            <p
+              *ngIf="zipForm.get('maxZip').invalid && (zipForm.value.submitted || zipForm.get('maxZip').touched)"
+              class="mt-2 text-sm text-red-600">
+              Maximum zip is Required and maximum length not greater than 5.
+            </p>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Location <span class="text-red-500">*</span>
+            </label>
+            <select
+              title="Choose Location"
+              class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              formControlName="locationId">
+              <option value="">Choose Location</option>
+              <option
+                *ngFor="let loc of locationData"
+                [value]="loc.id">
+                {{ loc.name }}
+              </option>
+            </select>
+            <p
+              *ngIf="
+                zipForm.get('locationId').invalid && (zipForm.value.submitted || zipForm.get('locationId').touched)
+              "
+              class="mt-2 text-sm text-red-600">
+              Location is Required.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-x-3 bg-gray-50 px-4 py-3 text-right sm:px-6">
+        <button
+          type="button"
+          class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          (click)="modal.close('Close Clicked')">
+          Close
+        </button>
+        <button
+          type="submit"
+          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Create Merchandise Rule Modal -->
+<ng-template
+  #productcontent
+  let-modal>
+  <div class="relative mx-auto max-w-lg rounded-lg bg-white shadow-xl">
+    <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Create Merchandise Rule</h3>
+      <button
+        type="button"
+        class="absolute right-4 top-4 text-gray-400 hover:text-gray-500"
+        (click)="modal.close('Close Clicked')">
+        <span class="sr-only">Close</span>
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form
+      [formGroup]="productForm"
+      novalidate
+      (ngSubmit)="saveProduct()">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="space-y-6">
+          <!-- Location Select -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">
+              Shopify Location <span class="text-red-500">*</span>
+            </label>
+            <select
+              title="Select Shopify Location"
+              class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              formControlName="locationId"
+              (change)="selected($event); getProductsForSpecificLocation(productForm.get('locationId').value)">
+              <option value="">Select Shopify Location</option>
+              <option
+                *ngFor="let loc of locationData"
+                [value]="loc.id">
+                {{ loc.name }}⭐⭐⭐⭐⭐
+              </option>
+            </select>
+            <p
+              *ngIf="
+                productForm.get('locationId').invalid &&
+                (productForm.value.submitted || productForm.get('locationId').touched)
+              "
+              class="mt-2 text-sm text-red-600">
+              Shopify Location is Required.
+            </p>
+          </div>
+
+          <!-- Product Multi-select -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700"> Product <span class="text-red-500">*</span> </label>
+            <ng-multiselect-dropdown
+              formControlName="productId"
+              allowRemoteDataSearch="true"
+              [settings]="AddProductRuleDropDownSetting"
+              placeholder="Products"
+              [data]="allProductsList"
+              [(ngModel)]="allSelectedProducts"
+              (onSelect)="onSelectProduct($event)"
+              (onSelectAll)="onAllSelectProduct($event)"
+              class="mt-1">
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-x-3 bg-gray-50 px-4 py-3 text-right sm:px-6">
+        <button
+          type="button"
+          class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          (click)="modal.close('Close Clicked')">
+          Close
+        </button>
+        <button
+          type="submit"
+          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #retailerTabContent>
+  <!-- Content for Retailers Tab -->
+  <div>Content for Retailers</div>
+</ng-template>
+
+<ng-template #merchandiseTabContent>
+  <!-- Content for Merchandise Tab -->
+  <div>Content for Merchandise</div>
+</ng-template>
+
+<ng-template #productTabContent>
+  <!-- Content for Merchandise Tab -->
+  <div>Content for Products</div>
+</ng-template>
