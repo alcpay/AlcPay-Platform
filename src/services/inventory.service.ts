@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { environment } from '../environments/environment'
-import { InventoryLocation } from './../models'
+import { environment } from '../app/environments/environment';
+import { InventoryLocation } from './../models';
 
 /**
  * Service for managing inventory locations
@@ -15,7 +15,7 @@ import { InventoryLocation } from './../models'
 })
 export class InventoryLocationsService {
   // Base API URL from environment configuration
-  private readonly BASE_URL = environment.apiUrl
+  private readonly BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +26,7 @@ export class InventoryLocationsService {
   list(): Observable<InventoryLocation[]> {
     return this.http
       .get<InventoryLocation[]>(`${this.BASE_URL}/public/inventory-locations`)
-      .pipe(map((response) => response))
+      .pipe(map((response) => response));
   }
 
   /**
@@ -36,8 +36,11 @@ export class InventoryLocationsService {
    */
   create(location: InventoryLocation): Observable<InventoryLocation> {
     return this.http
-      .post<InventoryLocation>(`${this.BASE_URL}/public/inventory-locations`, location)
-      .pipe(map((response) => response))
+      .post<InventoryLocation>(
+        `${this.BASE_URL}/public/inventory-locations`,
+        location,
+      )
+      .pipe(map((response) => response));
   }
 
   /**
@@ -48,11 +51,14 @@ export class InventoryLocationsService {
    */
   update(location: InventoryLocation): Observable<InventoryLocation> {
     if (!location.id) {
-      throw new Error('Location ID is required for update')
+      throw new Error('Location ID is required for update');
     }
     return this.http
-      .put<InventoryLocation>(`${this.BASE_URL}/public/inventory-locations/${location.id}`, location)
-      .pipe(map((response) => response))
+      .put<InventoryLocation>(
+        `${this.BASE_URL}/public/inventory-locations/${location.id}`,
+        location,
+      )
+      .pipe(map((response) => response));
   }
 
   /**
@@ -63,7 +69,7 @@ export class InventoryLocationsService {
   delete(id: string): Observable<void> {
     return this.http
       .delete<void>(`${this.BASE_URL}/public/inventory-locations/${id}`)
-      .pipe(map((response) => response))
+      .pipe(map((response) => response));
   }
 
   /**
@@ -73,7 +79,9 @@ export class InventoryLocationsService {
    */
   get(id: string): Observable<InventoryLocation> {
     return this.http
-      .get<InventoryLocation>(`${this.BASE_URL}/public/inventory-locations/${id}`)
-      .pipe(map((response) => response))
+      .get<InventoryLocation>(
+        `${this.BASE_URL}/public/inventory-locations/${id}`,
+      )
+      .pipe(map((response) => response));
   }
 }

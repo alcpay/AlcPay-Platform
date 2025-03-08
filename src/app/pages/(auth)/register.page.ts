@@ -1,6 +1,4 @@
-
-import { Component, OnInit } from '@angular/core'; 
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -12,10 +10,6 @@ import { Component, OnInit } from '@angular/core';
   `,
 })
 export default class RegisterPage implements OnInit {
-
   constructor() {}
-
-  ngOnInit(): void {
-
-  }
-} 
+  ngOnInit(): void {}
+}

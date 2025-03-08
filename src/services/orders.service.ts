@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * OrdersService handles order-related API interactions.
@@ -35,7 +35,9 @@ export class OrdersService {
    * @returns Observable with orders data
    */
   getOrders(pageInfo) {
-    return this.http.get(`${environment.apiUrl}/orders?pageInfo=${pageInfo ? pageInfo : ''}`)
+    return this.http.get(
+      `${environment.apiUrl}/orders?pageInfo=${pageInfo ? pageInfo : ''}`,
+    );
   }
 
   /**
@@ -45,7 +47,7 @@ export class OrdersService {
    * @returns Observable with order details
    */
   getDetail(id: any) {
-    return this.http.get(`${environment.apiUrl}/order/${id}`)
+    return this.http.get(`${environment.apiUrl}/order/${id}`);
   }
 
   /**
@@ -56,7 +58,10 @@ export class OrdersService {
    * @returns Observable with email sending response
    */
   resendMail(email, orderId) {
-    return this.http.post(`${environment.apiUrl}/order/sendTrackingLink`, { email, orderId })
+    return this.http.post(`${environment.apiUrl}/order/sendTrackingLink`, {
+      email,
+      orderId,
+    });
   }
 
   /**
@@ -68,9 +73,9 @@ export class OrdersService {
    */
   fulfillOrder(order, storeName: string) {
     if (order) {
-      order.storeName = storeName
+      order.storeName = storeName;
     }
-    return this.http.post(`${environment.apiUrl}/webhook/order`, order)
+    return this.http.post(`${environment.apiUrl}/webhook/order`, order);
   }
 
   /**
@@ -80,6 +85,10 @@ export class OrdersService {
    * @returns Observable with matching orders
    */
   getOrdersByOrderNumber(order_number) {
-    return this.http.get(`${environment.apiUrl}/orders?searchOrderNumber=${order_number ? order_number : ''}`)
+    return this.http.get(
+      `${environment.apiUrl}/orders?searchOrderNumber=${
+        order_number ? order_number : ''
+      }`,
+    );
   }
 }

@@ -1,0 +1,12 @@
+version: "0.2"
+ignorePaths:
+  - src/**/*.css
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - vitest
+ignoreWords:
+  - alcpay
+  - alcpay-app
+  - analogjs
+import: []

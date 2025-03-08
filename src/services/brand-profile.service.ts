@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * BrandProfileService handles brand-related API interactions.
@@ -28,7 +28,7 @@ import { environment } from './../environments/environment'
 })
 export class BrandProfileService {
   // Base API URL from environment configuration
-  private readonly BASE_URL = environment.apiUrl
+  private readonly BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -44,7 +44,7 @@ export class BrandProfileService {
         ...data,
         accountId: 'test', // TODO: Replace with dynamic account ID
       })
-      .pipe(map((response) => response))
+      .pipe(map((response) => response));
   }
 
   /**
@@ -54,6 +54,8 @@ export class BrandProfileService {
    * @returns Observable with brand details
    */
   fetchBrand(id: number): Observable<any> {
-    return this.http.get<any>(`${this.BASE_URL}/public/brand?brand_id=${id}`).pipe(map((response) => response))
+    return this.http
+      .get<any>(`${this.BASE_URL}/public/brand?brand_id=${id}`)
+      .pipe(map((response) => response));
   }
 }

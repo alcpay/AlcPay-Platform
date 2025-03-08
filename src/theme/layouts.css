@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer components {
+  /* Sidebar Main Nav Styles  */
+  .sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-content);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar .nav-link {
+    background-color: var(--sidebar-nav-link-bg);
+    color: var(--sidebar-nav-link-content);
+    font-size: var(--sidebar-nav-link-font-size);
+    font-weight: var(--sidebar-nav-link-font-weight);
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .sidebar .nav-link:hover {
+    background-color: var(--sidebar-nav-link-bg-hover);
+    color: var(--sidebar-nav-link-content-hover);
+  }
+
+  .sidebar .nav-link.active,
+  .sidebar .nav-link:active,
+  .sidebar .nav-link-active {
+    color: var(--sidebar-nav-link-content-active);
+    background-color: var(--sidebar-nav-link-bg-active);
+  }
+}

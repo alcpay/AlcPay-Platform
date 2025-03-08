@@ -1,53 +1,57 @@
-import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown'
-import { ToastrService } from 'ngx-toastr'
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
-import { PageHeadingComponent } from '../../../lib/page-heading/page-heading.component'
-import { HelperService } from '../../../services/helper.service'
-import { RuleService } from '../../../services/rule.service'
+import { HelperService } from '../../../../services/helper.service';
+import { RuleService } from '../../../../services/rule.service';
 
 interface Rule {
-  id: string
-  locationName: string
-  productFilter?: string
-  productName?: string
-  products?: Array<{ title: string }>
+  id: string;
+  locationName: string;
+  productFilter?: string;
+  productName?: string;
+  products?: Array<{ title: string }>;
 }
 
 @Component({
-  selector: 'customer-product-setup',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgMultiSelectDropDownModule, PageHeadingComponent],
-  templateUrl: './product-setup.component.html',
-  styleUrl: './product-setup.component.css',
+  selector: 'app-products',
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  template: ` <h1>Products</h1> `,
 })
-export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
-  zipForm: FormGroup = new FormGroup({})
-  productForm: FormGroup = new FormGroup({})
-  submitted = false
-  locations: any[] = []
-  states: any[] = []
-  products: any[] = []
-  variants: any[] = []
-  code: any
-  rulesList: Rule[] = []
-  stateId: any
-  productId: any
-  locationName: any
-  productName: any
-  sortToggle = false
-  AddStateRuleDropDownSetting = {}
-  allStatesList = []
-  allSelectedStates = []
-  AddProductRuleDropDownSetting = {}
-  allProductsList = []
-  allSelectedProducts = []
-  allProducts = []
-  AddProductRuleDropDownSetting1 = {}
-  allProducts1 = []
-  allProductsList1 = []
-  allSelectedProducts1 = []
+export default class ProductsPage implements OnInit {
+  stateForm: FormGroup = new FormGroup({});
+  zipForm: FormGroup = new FormGroup({});
+  productForm: FormGroup = new FormGroup({});
+  submitted = false;
+  locations: any[] = [];
+  states: any[] = [];
+  products: any[] = [];
+  variants: any[] = [];
+  code: any;
+  rulesList: Rule[] = [];
+  stateId: any;
+  productId: any;
+  locationName: any;
+  productName: any;
+  sortToggle = false;
+  AddStateRuleDropDownSetting = {};
+  allStatesList = [];
+  allSelectedStates = [];
+  AddProductRuleDropDownSetting = {};
+  allProductsList = [];
+  allSelectedProducts = [];
+  allProducts = [];
+  AddProductRuleDropDownSetting1 = {};
+  allProducts1 = [];
+  allProductsList1 = [];
+  allSelectedProducts1 = [];
 
   constructor(
     private ruleService: RuleService,
@@ -61,7 +65,7 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       locationId: new FormControl('', [Validators.required]),
       productId: new FormControl('', [Validators.required]),
       submitted: new FormControl(false),
-    })
+    });
 
     this.zipForm = new FormGroup({
       minZip: new FormControl('', [
@@ -76,31 +80,34 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       ]),
       locationId: new FormControl('', [Validators.required]),
       submitted: new FormControl(false),
-    })
+    });
 
     this.productForm = new FormGroup({
       productId: new FormControl('', [Validators.required]),
       // variantId: new FormControl('', [Validators.required]),
       locationId: new FormControl([]),
       submitted: new FormControl(false),
-    })
+    });
 
     this.helperService.getLocations().subscribe((resp: any) => {
-      this.locations = resp
-    })
+      this.locations = resp;
+    });
 
     this.helperService.getState().subscribe((resp: any) => {
-      this.states = resp
-    })
+      this.states = resp;
+    });
 
     this.helperService.getProducts().subscribe((resp: any) => {
-      this.products = resp.products
-      this.allProducts = resp?.products?.map((item: any) => ({ id: item?.id, title: item?.title }))
-      this.allProducts1 = resp.products
-      this.allProductsList1 = resp.products
-    })
+      this.products = resp.products;
+      this.allProducts = resp?.products?.map((item: any) => ({
+        id: item?.id,
+        title: item?.title,
+      }));
+      this.allProducts1 = resp.products;
+      this.allProductsList1 = resp.products;
+    });
 
-    this.list()
+    this.list();
     // this.ruleService.getRuleList().subscribe((data: any) => {
     //   console.log(data);
     //   this.rulesList = data;
@@ -113,7 +120,7 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true,
-    }
+    };
 
     this.AddProductRuleDropDownSetting = {
       singleSelection: false,
@@ -123,7 +130,7 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true,
-    }
+    };
     this.AddProductRuleDropDownSetting1 = {
       singleSelection: false,
       idField: 'id', // Correct field name for item ID
@@ -132,33 +139,39 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true,
-    }
+    };
   }
 
   isProductHighlighted(filter: string, product: any): boolean {
-    return filter && product.title.toLowerCase().includes(filter.toLowerCase())
+    return filter && product.title.toLowerCase().includes(filter.toLowerCase());
   }
 
   starGenerator = (num: number, isShowMessage: Boolean = true) =>
-    num === 0 && isShowMessage ? 'no rating' : Array.from({ length: num }).fill('⭐').join('')
+    num === 0 && isShowMessage
+      ? 'no rating'
+      : Array.from({ length: num }).fill('⭐').join('');
 
   getProductsForSpecificLocation(locId: string) {
-    this.allProductsList = []
-    this.allSelectedProducts = []
+    this.allProductsList = [];
+    this.allSelectedProducts = [];
 
-    this.helperService.getProductsForSpecificLocation(locId).subscribe((resp: any) => {
-      this.allProductsList = resp
-    })
+    this.helperService
+      .getProductsForSpecificLocation(locId)
+      .subscribe((resp: any) => {
+        this.allProductsList = resp;
+      });
   }
 
   getStatesForSpecificProductAndLocation(locId: string, prodId: any) {
-    this.allStatesList = []
-    this.allSelectedStates = []
-    let productIds = prodId.map((item: any) => item?.id)
-    console.log('prodId=========================>', prodId)
-    this.helperService.getStatesForSpecificProductAndLocation(productIds, locId).subscribe((resp: any) => {
-      this.allStatesList = resp
-    })
+    this.allStatesList = [];
+    this.allSelectedStates = [];
+    let productIds = prodId.map((item: any) => item?.id);
+    console.log('prodId=========================>', prodId);
+    this.helperService
+      .getStatesForSpecificProductAndLocation(productIds, locId)
+      .subscribe((resp: any) => {
+        this.allStatesList = resp;
+      });
   }
 
   onSelectProduct(item: any) {}
@@ -166,24 +179,24 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
   onAllSelectProduct(items: any) {}
 
   onStateSelect(item: any) {
-    console.log(item)
+    console.log(item);
   }
 
   onAllStatesSelect(items: any) {
-    console.log(items)
+    console.log(items);
   }
 
   list() {
     this.ruleService.getProductRules().subscribe((data: any) => {
       // console.log(data);
-      this.rulesList = data.productRules
-    })
+      this.rulesList = data.productRules;
+    });
   }
 
   selected(event: any) {
     for (let i = 0; i < this.locations.length; i++) {
       if (event.target.value == this.locations[i].id) {
-        this.locationName = this.locations[i].name
+        this.locationName = this.locations[i].name;
       }
     }
   }
@@ -191,7 +204,7 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
   selectProduct(event: any): void {
     for (let i = 0; i < this.products.length; i++) {
       if (event.target.value == this.products[i].id) {
-        this.productName = this.products[i].title
+        this.productName = this.products[i].title;
       }
     }
   }
@@ -199,14 +212,14 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
   selectcode(event: any): void {
     for (let i = 0; i < this.states.length; i++) {
       if (event.target.value == this.states[i].id) {
-        this.code = this.states[i].code
+        this.code = this.states[i].code;
       }
     }
   }
 
   state(content: any) {
-    this.allSelectedStates = []
-    this.allSelectedProducts1 = []
+    this.allSelectedStates = [];
+    this.allSelectedProducts1 = [];
     // Modal functionality removed
   }
 
@@ -215,17 +228,17 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
   }
 
   product(content: any) {
-    this.productForm.reset()
-    this.allProductsList = []
-    this.allSelectedProducts = []
+    this.productForm.reset();
+    this.allProductsList = [];
+    this.allSelectedProducts = [];
     // Modal functionality removed
   }
 
   saveState() {
-    this.submitted = true
+    this.submitted = true;
 
     if (this.stateForm.invalid) {
-      return
+      return;
     }
 
     const body = {
@@ -238,34 +251,34 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       // productName: this.productName,
       locationName: this.locationName,
       submitted: true,
-    }
+    };
     this.ruleService.addStateRule(body).subscribe(
       (response) => {
         this.toastr.success('State Rule Added sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
+        });
+        this.list();
         // Modal functionality removed
-        this.locationName = null
-        this.productName = null
-        this.allStatesList = []
-        this.allSelectedStates = []
-        this.stateForm.reset()
+        this.locationName = null;
+        this.productName = null;
+        this.allStatesList = [];
+        this.allSelectedStates = [];
+        this.stateForm.reset();
       },
       (error) => {
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
-        this.submitted = false
+        });
+        this.submitted = false;
       },
-    )
+    );
   }
 
   saveZip() {
     // console.log(this.zipForm.value);
-    this.submitted = true
+    this.submitted = true;
     if (this.zipForm.invalid) {
-      return
+      return;
     }
 
     const body = {
@@ -273,26 +286,26 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       zipMax: this.zipForm.value.maxZip,
       locationId: this.zipForm.value.locationId,
       submitted: true,
-    }
+    };
 
     this.ruleService.addZipRule(body).subscribe(
       (response) => {
         // Modal functionality removed
-        this.zipForm.reset()
-        this.submitted = false
+        this.zipForm.reset();
+        this.submitted = false;
       },
       (error) => {
-        this.submitted = false
-        body.submitted = false
+        this.submitted = false;
+        body.submitted = false;
       },
-    )
+    );
   }
 
   saveProduct() {
-    console.log(this.productForm.value)
-    this.submitted = true
+    console.log(this.productForm.value);
+    this.submitted = true;
     if (this.productForm.invalid) {
-      return
+      return;
     }
 
     const body = {
@@ -303,30 +316,30 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       locationId: this.productForm.value.locationId,
       products: this.productForm.value.productId,
       submitted: true,
-    }
+    };
 
     this.ruleService.addProductRule(body).subscribe(
       (response) => {
         this.toastr.success('Product Rule Added sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
+        });
+        this.list();
         // Modal functionality removed
-        this.locationName = null
-        this.productName = null
-        this.allProductsList = []
-        this.allSelectedProducts = []
-        this.productForm.reset()
-        this.submitted = false
+        this.locationName = null;
+        this.productName = null;
+        this.allProductsList = [];
+        this.allSelectedProducts = [];
+        this.productForm.reset();
+        this.submitted = false;
       },
       (error) => {
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
-        this.submitted = false
-        body.submitted = false
+        });
+        this.submitted = false;
+        body.submitted = false;
       },
-    )
+    );
   }
 
   stateRule(content: any, rule: any) {
@@ -337,18 +350,18 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       locationId: rule.locationId,
       productId: rule.productId,
       submitted: true,
-    })
-    this.locationName = rule.locationName
-    this.productName = rule.productName
-    this.code = rule.code
-    this.stateId = rule.id
+    });
+    this.locationName = rule.locationName;
+    this.productName = rule.productName;
+    this.code = rule.code;
+    this.stateId = rule.id;
     // Modal functionality removed
-    this.submitted = false
+    this.submitted = false;
   }
 
   productRule(content: any, rule: any) {
-    this.allSelectedProducts = rule?.products
-    this.allSelectedProducts1 = rule.products
+    this.allSelectedProducts = rule?.products;
+    this.allSelectedProducts1 = rule.products;
     // for (let i = 0; i < this.products.length; i++) {
     //   if (rule.productId == this.products[i].id) {
     //     this.variants = this.products[i].variants;
@@ -359,11 +372,11 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       // variantId: this.productForm.value.variantId,
       locationId: rule.locationId,
       submitted: true,
-    })
-    this.locationName = rule.locationName
-    this.productId = rule.id
+    });
+    this.locationName = rule.locationName;
+    this.productId = rule.id;
     // Modal functionality removed
-    this.submitted = false
+    this.submitted = false;
   }
 
   deleteStateRule(rule: any) {
@@ -371,23 +384,23 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       (response) => {
         this.toastr.success('State Rule Deleted sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
-        this.ngOnInit()
+        });
+        this.list();
+        this.ngOnInit();
       },
       (error) => {
-        this.submitted = false
+        this.submitted = false;
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
+        });
       },
-    )
+    );
   }
 
   updateStateRule() {
-    this.submitted = true
+    this.submitted = true;
     if (this.stateForm.invalid) {
-      return
+      return;
     }
 
     const body = {
@@ -399,31 +412,31 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       productName: this.productName,
       locationName: this.locationName,
       submitted: true,
-    }
+    };
     this.ruleService.updateState(body).subscribe(
       (response) => {
         this.toastr.success('State Rule Updated sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
+        });
+        this.list();
         // Modal functionality removed
-        this.stateForm.reset()
-        this.submitted = false
+        this.stateForm.reset();
+        this.submitted = false;
       },
       (error) => {
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
-        this.submitted = false
-        body.submitted = false
+        });
+        this.submitted = false;
+        body.submitted = false;
       },
-    )
+    );
   }
 
   updateProductRule() {
-    this.submitted = true
+    this.submitted = true;
     if (this.productForm.invalid) {
-      return
+      return;
     }
 
     const body = {
@@ -433,27 +446,27 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       locationId: this.productForm.value.locationId,
       locationName: this.locationName,
       submitted: true,
-    }
+    };
 
     this.ruleService.updateProductRule(body).subscribe(
       (response) => {
         this.toastr.success('Product Rule Updated sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
+        });
+        this.list();
         // Modal functionality removed
-        this.productForm.reset()
-        this.allProductsList = []
-        this.allSelectedProducts = []
+        this.productForm.reset();
+        this.allProductsList = [];
+        this.allSelectedProducts = [];
       },
       (error) => {
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
-        this.submitted = false
-        body.submitted = false
+        });
+        this.submitted = false;
+        body.submitted = false;
       },
-    )
+    );
   }
 
   deleteProductRule(id: any) {
@@ -461,75 +474,75 @@ export class ProductSetupComponent {stateForm: FormGroup = new FormGroup({})
       (response) => {
         this.toastr.success('Product Rule deleted sucessfully!', '', {
           timeOut: 2000,
-        })
-        this.list()
-        this.ngOnInit()
+        });
+        this.list();
+        this.ngOnInit();
       },
       (error) => {
         this.toastr.error(error, '', {
           timeOut: 2000,
-        })
+        });
       },
-    )
+    );
   }
 
   toggleSort() {
     if (this.sortToggle) {
       this.rulesList.sort((a, b) => {
-        const na = a.productName?.toLowerCase() ?? ''
-        const nb = b.productName?.toLowerCase() ?? ''
+        const na = a.productName?.toLowerCase() ?? '';
+        const nb = b.productName?.toLowerCase() ?? '';
         if (na < nb) {
-          return -1
+          return -1;
         }
         if (nb < na) {
-          return 1
+          return 1;
         }
-        return 0
-      })
-      this.sortToggle = !this.sortToggle
+        return 0;
+      });
+      this.sortToggle = !this.sortToggle;
     } else {
       this.rulesList.sort((a, b) => {
-        const na = a.productName?.toLowerCase() ?? ''
-        const nb = b.productName?.toLowerCase() ?? ''
+        const na = a.productName?.toLowerCase() ?? '';
+        const nb = b.productName?.toLowerCase() ?? '';
         if (nb < na) {
-          return -1
+          return -1;
         }
         if (na < nb) {
-          return 1
+          return 1;
         }
-        return 0
-      })
-      this.sortToggle = !this.sortToggle
+        return 0;
+      });
+      this.sortToggle = !this.sortToggle;
     }
   }
 
   sortLocation() {
     if (this.sortToggle) {
       this.rulesList.sort((a, b) => {
-        const na = a.locationName.toLowerCase()
-        const nb = b.locationName.toLowerCase()
+        const na = a.locationName.toLowerCase();
+        const nb = b.locationName.toLowerCase();
         if (na < nb) {
-          return -1
+          return -1;
         }
         if (nb < na) {
-          return 1
+          return 1;
         }
-        return 0
-      })
-      this.sortToggle = !this.sortToggle
+        return 0;
+      });
+      this.sortToggle = !this.sortToggle;
     } else {
       this.rulesList.sort((a, b) => {
-        const na = a.locationName.toLowerCase()
-        const nb = b.locationName.toLowerCase()
+        const na = a.locationName.toLowerCase();
+        const nb = b.locationName.toLowerCase();
         if (nb < na) {
-          return -1
+          return -1;
         }
         if (na < nb) {
-          return 1
+          return 1;
         }
-        return 0
-      })
-      this.sortToggle = !this.sortToggle
+        return 0;
+      });
+      this.sortToggle = !this.sortToggle;
     }
   }
 }

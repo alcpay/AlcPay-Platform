@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * HelperService provides utility methods for various API interactions.
@@ -29,7 +29,7 @@ import { environment } from './../environments/environment'
 })
 export class HelperService {
   // Base API URL from environment configuration
-  private readonly BASE_URL = environment.apiUrl
+  private readonly BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -39,7 +39,7 @@ export class HelperService {
    * @returns Observable with locations data
    */
   getLocations(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/locations`)
+    return this.http.get(`${this.BASE_URL}/locations`);
   }
 
   /**
@@ -48,7 +48,7 @@ export class HelperService {
    * @returns Observable with states data
    */
   getAllStates(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/states/all`)
+    return this.http.get(`${this.BASE_URL}/states/all`);
   }
 
   /**
@@ -59,7 +59,9 @@ export class HelperService {
    * @returns Observable with filtered locations
    */
   getFilteredLocations(stateId: string, productId: string): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/rule/available-locations?stateId=${stateId}&productId=${productId}`)
+    return this.http.get(
+      `${this.BASE_URL}/rule/available-locations?stateId=${stateId}&productId=${productId}`,
+    );
   }
 
   /**
@@ -69,7 +71,9 @@ export class HelperService {
    * @returns Observable with available products
    */
   getProductsForSpecificLocation(locId: string): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/rule/available-products?locationId=${locId}`)
+    return this.http.get(
+      `${this.BASE_URL}/rule/available-products?locationId=${locId}`,
+    );
   }
 
   /**
@@ -79,10 +83,17 @@ export class HelperService {
    * @param locId Location identifier
    * @returns Observable with available states
    */
-  getStatesForSpecificProductAndLocation(prodId: string, locId: string): Observable<any> {
+  getStatesForSpecificProductAndLocation(
+    prodId: string,
+    locId: string,
+  ): Observable<any> {
     return this.http.get(
-      `${this.BASE_URL}/rule/available-states?locationId=${locId}&productIds=${JSON.stringify(prodId)}`,
-    )
+      `${
+        this.BASE_URL
+      }/rule/available-states?locationId=${locId}&productIds=${JSON.stringify(
+        prodId,
+      )}`,
+    );
   }
 
   /**
@@ -92,7 +103,9 @@ export class HelperService {
    * @returns Observable with filtered locations
    */
   getFilteredLocationsForProductRule(productId: string): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/rule/available-locations2?productId=${productId}`)
+    return this.http.get(
+      `${this.BASE_URL}/rule/available-locations2?productId=${productId}`,
+    );
   }
 
   /**
@@ -101,7 +114,7 @@ export class HelperService {
    * @returns Observable with states data
    */
   getState(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/states`)
+    return this.http.get(`${this.BASE_URL}/states`);
   }
 
   /**
@@ -110,7 +123,7 @@ export class HelperService {
    * @returns Observable with products data
    */
   getProducts(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/products`)
+    return this.http.get(`${this.BASE_URL}/products`);
   }
 
   /**
@@ -123,9 +136,9 @@ export class HelperService {
     return this.http.post<any>(`${this.BASE_URL}/add-tracking`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        return JSON.parse(err.message)
+        return JSON.parse(err.message);
       }),
-    )
+    );
   }
 
   /**
@@ -135,12 +148,14 @@ export class HelperService {
    * @returns Observable with account creation response
    */
   addBusiness(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/stripe/create-account`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/stripe/create-account`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          return JSON.parse(err.message);
+        }),
+      );
   }
 
   /**
@@ -150,12 +165,14 @@ export class HelperService {
    * @returns Observable with request response
    */
   requestRetailer(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/request-cms-retailer`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/request-cms-retailer`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          return JSON.parse(err.message);
+        }),
+      );
   }
 
   /**
@@ -165,12 +182,14 @@ export class HelperService {
    * @returns Observable with rating response
    */
   saveRatings(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/public/brand/rate-retailer`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/public/brand/rate-retailer`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          return JSON.parse(err.message);
+        }),
+      );
   }
 
   /**
@@ -183,9 +202,9 @@ export class HelperService {
     return this.http.put<any>(`${this.BASE_URL}/account/edit`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        return JSON.parse(err.message)
+        return JSON.parse(err.message);
       }),
-    )
+    );
   }
 
   /**
@@ -195,12 +214,14 @@ export class HelperService {
    * @returns Observable with update response
    */
   updateRequestedRetailer(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/update-retailer-request`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/update-retailer-request`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          return JSON.parse(err.message);
+        }),
+      );
   }
 
   /**
@@ -213,9 +234,9 @@ export class HelperService {
     return this.http.put<any>(`${this.BASE_URL}/account/activate`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        return JSON.parse(err.message)
+        return JSON.parse(err.message);
       }),
-    )
+    );
   }
 
   /**
@@ -228,9 +249,9 @@ export class HelperService {
     return this.http.put<any>(`${this.BASE_URL}/account/link`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        return JSON.parse(err.message)
+        return JSON.parse(err.message);
       }),
-    )
+    );
   }
 
   /**
@@ -239,7 +260,7 @@ export class HelperService {
    * @returns Observable with retailers list
    */
   getRetailer(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/account/list`)
+    return this.http.get(`${this.BASE_URL}/account/list`);
   }
 
   /**
@@ -248,7 +269,7 @@ export class HelperService {
    * @returns Observable with CMS retailers list
    */
   getRetailers(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/get-cms-retailers`)
+    return this.http.get(`${this.BASE_URL}/get-cms-retailers`);
   }
 
   /**
@@ -258,7 +279,7 @@ export class HelperService {
    * @returns Observable with unassignment response
    */
   unassignLocation(id: any): Observable<any> {
-    return this.http.put(`${this.BASE_URL}/account/unlink`, { id })
+    return this.http.put(`${this.BASE_URL}/account/unlink`, { id });
   }
 
   /**
@@ -268,7 +289,7 @@ export class HelperService {
    * @returns Observable with deletion response
    */
   deleteBusiness(id: any): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/account/delete`, { id })
+    return this.http.post(`${this.BASE_URL}/account/delete`, { id });
   }
 
   /**
@@ -278,7 +299,9 @@ export class HelperService {
    * @returns Observable with deletion response
    */
   deleteRequestedRetailer(id: any): Observable<any> {
-    return this.http.delete(`${this.BASE_URL}/delete-retailer-request?id=${id}`)
+    return this.http.delete(
+      `${this.BASE_URL}/delete-retailer-request?id=${id}`,
+    );
   }
 
   /**
@@ -288,7 +311,7 @@ export class HelperService {
    * @returns Observable with status toggle response
    */
   requestedRetailerStatusToggle(id: number): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/toggle-retailer-status`, { id })
+    return this.http.post(`${this.BASE_URL}/toggle-retailer-status`, { id });
   }
 
   /**
@@ -298,7 +321,7 @@ export class HelperService {
    * @returns Observable with tracking information
    */
   fetchTrackingInfo(fulfillmentId: any): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/tracking-info/${fulfillmentId}`)
+    return this.http.get(`${this.BASE_URL}/tracking-info/${fulfillmentId}`);
   }
 
   /**
@@ -325,8 +348,10 @@ export class HelperService {
     createdDate: string,
   ): Observable<any> {
     return this.http.get(
-      `${this.BASE_URL}/payouts?pageSize=${pageSize}&page=${pageNo}&status=${status || ''}&sort=${sort}&orderNumber=${orderNumber}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`,
-    )
+      `${this.BASE_URL}/payouts?pageSize=${pageSize}&page=${pageNo}&status=${
+        status || ''
+      }&sort=${sort}&orderNumber=${orderNumber}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`,
+    );
   }
 
   /**
@@ -354,8 +379,12 @@ export class HelperService {
     brandName: string,
     createdDate: string,
   ): Observable<any> {
-    const url = `${this.BASE_URL}/fulfillments?pageSize=${pageSize}&page=${pageNo}&status=${status || ''}&sort=${sort}&daterange=${daterange}&shopifyTrackingStatus=${shopifyTrackingStatus}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`
-    return this.http.get(url)
+    const url = `${
+      this.BASE_URL
+    }/fulfillments?pageSize=${pageSize}&page=${pageNo}&status=${
+      status || ''
+    }&sort=${sort}&daterange=${daterange}&shopifyTrackingStatus=${shopifyTrackingStatus}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`;
+    return this.http.get(url);
   }
 
   /**
@@ -366,9 +395,13 @@ export class HelperService {
    * @param indexKey Index key for tracking
    * @returns Observable with fulfillment tracking details
    */
-  getFulfillmentTrackingDetail(shopifyOrderId: any, fulfillmentId: any, indexKey: any): Observable<any> {
-    const url = `${this.BASE_URL}/fulfillment/trackingdetail?fulfillmentId=${fulfillmentId}&orderId=${shopifyOrderId}&indexKey=${indexKey}`
-    return this.http.get(url)
+  getFulfillmentTrackingDetail(
+    shopifyOrderId: any,
+    fulfillmentId: any,
+    indexKey: any,
+  ): Observable<any> {
+    const url = `${this.BASE_URL}/fulfillment/trackingdetail?fulfillmentId=${fulfillmentId}&orderId=${shopifyOrderId}&indexKey=${indexKey}`;
+    return this.http.get(url);
   }
 
   /**
@@ -380,10 +413,17 @@ export class HelperService {
    * @param sort Sorting parameter
    * @returns Observable with balances data
    */
-  getBalances(pageSize: any, pageNo: any, status: any, sort: any): Observable<any> {
+  getBalances(
+    pageSize: any,
+    pageNo: any,
+    status: any,
+    sort: any,
+  ): Observable<any> {
     return this.http.get(
-      `${this.BASE_URL}/balances?pageSize=${pageSize}&page=${pageNo}&status=${status || ''}&sort=${sort}`,
-    )
+      `${this.BASE_URL}/balances?pageSize=${pageSize}&page=${pageNo}&status=${
+        status || ''
+      }&sort=${sort}`,
+    );
   }
 
   /**
@@ -393,7 +433,9 @@ export class HelperService {
    * @returns Observable with status change response
    */
   changeInHouseBusiness(id: any): Observable<any> {
-    return this.http.put(`${this.BASE_URL}/account/change-in-house-business`, { id })
+    return this.http.put(`${this.BASE_URL}/account/change-in-house-business`, {
+      id,
+    });
   }
 
   /**
@@ -403,11 +445,13 @@ export class HelperService {
    * @returns Observable with account link response
    */
   createAccountLink(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/stripe/send-account-link`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/stripe/send-account-link`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          return JSON.parse(err.message);
+        }),
+      );
   }
 }

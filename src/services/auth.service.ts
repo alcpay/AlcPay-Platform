@@ -1,142 +1,153 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
-import { AuthenticatedUser } from '../models'
-// The localStorage object is a built-in browser API and does not need to be imported.
+import { environment } from '../app/environments/environment';
 /**
- * AuthService handles user authentication and management.
+ * User model interface describing the shape of user data.
+ * TODO: Expand the interface to include additional user properties.
+ */
+import { User } from '../models/user.model';
+
+/**
+ * UserService handles user authentication and management.
  *
- * This service manages the current user state and provides methods to interact with user authentication.
+ * This service manages user login, registration, and logout processes with local storage integration.
+ *
+ * @see UserService
  */
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  // BehaviorSubject to track the current user state, typed as AuthenticatedUser or null.
-  private currentUserSubject: BehaviorSubject<AuthenticatedUser | null>
+export class UserService {
+  // BehaviorSubject to track the current user state, typed as User or null.
+  private currentUserState: BehaviorSubject<any>;
 
   // Observable for components to subscribe to current user state changes.
-  public currentUser: Observable<AuthenticatedUser | null>
+  public currentUser: Observable<User | any | null>;
 
   /**
-   * Constructs the AuthService.
+   * Constructs the UserService.
    * @param http Angular HttpClient for making API requests.
    */
   constructor(private http: HttpClient) {
-    const storedUser = localStorage.getItem('currentUser')
-    const initialUser: AuthenticatedUser | null = storedUser ? JSON.parse(storedUser) : null
-    this.currentUserSubject = new BehaviorSubject<AuthenticatedUser | null>(initialUser)
-    this.currentUser = this.currentUserSubject.asObservable()
+    // Retrieve the current user from local storage, if available.
+    const storedUser = localStorage.getItem('currentUser');
+    const initialUser: any = storedUser ? JSON.parse(storedUser) : null;
+    this.currentUserState = new BehaviorSubject<any>(initialUser);
+    this.currentUser = this.currentUserState.asObservable();
   }
 
   /**
-   * Get the current user value.
+   * Getter for the current user.
    *
-   * @returns {AuthenticatedUser | null} The current user object or null if not authenticated.
+   * @returns {any} The current user object or null if not authenticated.
+   * @todo: Remove the any type when the User model is expanded.
    */
-  public get currentUserValue(): AuthenticatedUser | null {
-    return this.currentUserSubject.value
+  public get currentUserInfo(): any {
+    return this.currentUserState.value;
   }
 
   /**
-   * Get the current user as an observable.
-   *
-   * @returns {Observable<AuthenticatedUser | null>} Observable emitting the current user object or null if not authenticated.
-   */
-  public getCurrentUser(): AuthenticatedUser | null {
-    return this.currentUserSubject.value
-  }
-
-  /**
-   * Authenticate a user and update the current user state.
+   * Authenticate a user and store credentials.
    *
    * @param {string} email - The user's email address.
    * @param {string} password - The user's password.
-   * @param {boolean} rememberMe - Flag to remember the user.
-   * @returns {Observable<AuthenticatedUser>} Observable emitting the authenticated user data.
+   * @param {boolean} rememberMe - Flag indicating whether to persist the login.
+   * @returns {Observable<User>} Observable emitting the authenticated user data.
    * @throws An error if the response does not contain a valid accessToken.
    */
-  login(email: string, password: string, rememberMe: boolean): Observable<AuthenticatedUser> {
+  login(
+    email: string,
+    password: string,
+    rememberMe: boolean,
+  ): Observable<User> {
     return this.http
-      .post<{ data: AuthenticatedUser }>(`${environment.apiUrl}/public/auth/login`, { email, password })
+      .post<any>(`${environment.apiUrl}/public/auth/login`, { email, password })
       .pipe(
         map((response) => {
           // Validate that the response contains an accessToken.
           if (response.data && response.data.accessToken) {
-            const user: AuthenticatedUser = response.data
-            // Update the current user state.
-            this.currentUserSubject.next(user)
+            const user: User = response.data;
             // Store user details in local storage.
-            localStorage.setItem('currentUser', JSON.stringify(user))
-            localStorage.setItem('savedEmail', email)
-            return user
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('rememberMe', String(user.email));
+            // Update the current user state.
+            this.currentUserState.next(user);
+            return user;
           }
-          throw new Error('Invalid login response: accessToken missing')
+          throw new Error('Invalid login response: accessToken missing');
         }),
-      )
+      );
   }
 
   /**
-   * Logout the user by clearing the current user state.
+   * Register a new brand account.
    *
-   * @returns {void}
-   */
-  logout(): void {
-    // Reset the current user state.
-    this.currentUserSubject.next(null)
-    // Clear user details from local storage.
-    localStorage.removeItem('currentUser')
-    localStorage.removeItem('savedEmail')
-  }
-
-  /**
-   * Register a new brand user.
-   *
-   * @param {string} email - The user's email address.
-   * @param {string} password - The user's password.
+   * @param {string} email - The contact email for the brand.
+   * @param {string} password - The account password.
+   * @param {boolean} rememberMe - Flag indicating whether to persist the login.
    * @param {string} brandName - The name of the brand.
-   * @param {string} contact - The contact information for the brand.
-   * @param {string} website - The website of the brand.
-   * @returns {Observable<AuthenticatedUser>} Observable emitting the registered user data.
+   * @param {string} contact - Contact information.
+   * @param {string} website - The brand's website URL.
+   * @returns {Observable<User>} Observable emitting the registered user data.
    * @throws An error if the response does not contain a valid accessToken.
    */
-  register(
+  registerBrand(
     email: string,
     password: string,
+    rememberMe: boolean,
     brandName: string,
     contact: string,
     website: string,
-  ): Observable<AuthenticatedUser> {
+  ): Observable<User> {
     // Construct payload with fields provided.
-    const payload = {
-      email,
-      password,
-      brandName,
-      contact,
-      website,
-    }
+    const payload: any = {
+      ...(email && { email }),
+      ...(password && { password }),
+      ...(brandName && { brandName }),
+      ...(contact && { contact }),
+      ...(website && { website }),
+    };
 
-    return this.http.post<{ data: AuthenticatedUser }>(`${environment.apiUrl}/public/brand/register`, payload).pipe(
-      map((response) => {
-        // Validate that the response contains an accessToken.
-        if (response.data && response.data.accessToken) {
-          const user: AuthenticatedUser = response.data
+    return this.http
+      .post<any>(`${environment.apiUrl}/public/brand/register`, payload)
+      .pipe(
+        map((response) => {
+          // Validate that the response contains an accessToken.
+          if (response.data && response.data.accessToken) {
+            const user: User = response.data;
 
-          // Store user details in local storage.
-          localStorage.setItem('currentUser', JSON.stringify(user))
-          // Store the email in local storage for remember me functionality.
-          localStorage.setItem('savedEmail', email)
+            // Store user details in local storage.
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            // Store the email in local storage for remember me functionality.
+            localStorage.setItem('rememberMe', String(email));
 
-          // Update the current user state.
-          this.currentUserSubject.next(user)
+            // Update the current user state.
+            this.currentUserState.next(user);
 
-          return user
-        }
-        throw new Error('Invalid registration response: accessToken missing')
-      }),
-    )
+            return user;
+          }
+          throw new Error('Invalid registration response: accessToken missing');
+        }),
+      );
+  }
+
+  /**
+   * Logout the user by clearing stored credentials.
+   */
+  logout(): void {
+    // Remove user data from local storage.
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('rememberMe');
+
+    // Reset the current user state.
+    this.currentUserState.next(null);
+  }
+
+  // Example method: Get user data
+  getUserData(): Observable<User> {
+    return this.http.get<User>('/api/user');
   }
 }

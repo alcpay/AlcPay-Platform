@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * BrandsService handles brand-related API interactions.
@@ -28,7 +28,7 @@ import { environment } from './../environments/environment'
 })
 export class BrandsService {
   // Base API URL from environment configuration
-  private readonly BASE_URL = environment.apiUrl
+  private readonly BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -49,9 +49,9 @@ export class BrandsService {
     brandName: string,
     createdDate: string,
   ): Observable<any> {
-    console.log(pageSize, pageNo)
-    const url = `${this.BASE_URL}/public/brand/all?pageSize=${pageSize}&page=${pageNo}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`
-    return this.http.get(url)
+    console.log(pageSize, pageNo);
+    const url = `${this.BASE_URL}/public/brand/all?pageSize=${pageSize}&page=${pageNo}&retailer=${retailer}&brandName=${brandName}&createdDate=${createdDate}`;
+    return this.http.get(url);
   }
 
   /**
@@ -61,13 +61,15 @@ export class BrandsService {
    * @returns Observable with commission update response
    */
   updateCommision(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/public/brand/handle-commission`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        // Error handling can be improved with proper error logging
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/public/brand/handle-commission`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          // Error handling can be improved with proper error logging
+          return JSON.parse(err.message);
+        }),
+      );
   }
 
   /**
@@ -77,12 +79,14 @@ export class BrandsService {
    * @returns Observable with brand update response
    */
   updateBrand(body: any): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/public/brand/update-details`, body).pipe(
-      map((response) => response),
-      catchError((err) => {
-        // Error handling can be improved with proper error logging
-        return JSON.parse(err.message)
-      }),
-    )
+    return this.http
+      .post<any>(`${this.BASE_URL}/public/brand/update-details`, body)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          // Error handling can be improved with proper error logging
+          return JSON.parse(err.message);
+        }),
+      );
   }
 }

@@ -1,21 +1,18 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
-import { ToastrService } from 'ngx-toastr'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopifyService {
-  private readonly BASE_URL = environment.apiUrl
+  private readonly BASE_URL = environment.apiUrl;
 
-  constructor(
-    private http: HttpClient,
-    private toastr: ToastrService
-  ) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   /**
    * Save Shopify store configuration information.
@@ -31,24 +28,24 @@ export class ShopifyService {
     storeUrl: string,
     storePassword: string,
     storeAccessId: string,
-    apiVersion: string
+    apiVersion: string,
   ): Observable<any> {
     const config: any = {
       STORE_URL: storeUrl,
       STORE_PASSWORD: storePassword,
       STORE_ACCESS_ID: storeAccessId,
-      API_VERSION: apiVersion
-    }
+      API_VERSION: apiVersion,
+    };
 
     return this.http
       .post<any>(`${this.BASE_URL}/public/brand/save-shopify-info`, config)
       .pipe(
         map((response) => response),
         catchError((error: HttpErrorResponse) => {
-          this.toastr.error('Failed to save Shopify configuration', 'Error')
-          return throwError(() => error)
-        })
-      )
+          this.toastr.error('Failed to save Shopify configuration', 'Error');
+          return throwError(() => error);
+        }),
+      );
   }
 
   /**
@@ -63,10 +60,10 @@ export class ShopifyService {
       .pipe(
         map((response) => response),
         catchError((error: HttpErrorResponse) => {
-          this.toastr.error('Failed to fetch Shopify data', 'Error')
-          return throwError(() => error)
-        })
-      )
+          this.toastr.error('Failed to fetch Shopify data', 'Error');
+          return throwError(() => error);
+        }),
+      );
   }
 
   /**
@@ -77,14 +74,12 @@ export class ShopifyService {
    * @throws HttpErrorResponse if the API call fails
    */
   fetchWebhookURL(id: number): Observable<any> {
-    return this.http
-      .get<any>(`${this.BASE_URL}/public/urls/${id}`)
-      .pipe(
-        map((response) => response),
-        catchError((error: HttpErrorResponse) => {
-          this.toastr.error('Failed to fetch webhook URL', 'Error')
-          return throwError(() => error)
-        })
-      )
+    return this.http.get<any>(`${this.BASE_URL}/public/urls/${id}`).pipe(
+      map((response) => response),
+      catchError((error: HttpErrorResponse) => {
+        this.toastr.error('Failed to fetch webhook URL', 'Error');
+        return throwError(() => error);
+      }),
+    );
   }
 }

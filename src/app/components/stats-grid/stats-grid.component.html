@@ -1,0 +1,26 @@
+<div class="bg-white text-gray-950 shadow-md border border-gray-200 min-h-28">
+  <dl
+    class="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      *ngFor="let stat of configData.stats; trackBy: trackByStatName"
+      class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-6 sm:px-4 xl:px-6 {{
+        stat.metricStyleClass
+      }}">
+      <dt class="text-sm font-medium text-gray-500 uppercase">
+        {{ stat.metricTitle }}
+      </dt>
+      <dd
+        [ngClass]="
+          stat.metricChangeType === 'negative'
+            ? 'bg-rose-600 text-white font-bold rounded-full px-2 py-1'
+            : 'bg-emerald-600 text-white font-bold rounded-full px-2 py-1'
+        "
+        class="text-sm uppercase font-medium">
+        {{ stat.metricChangeValue }}
+      </dd>
+      <dd class="w-full flex-none tracking-tight text-black h1">
+        {{ stat.metricValue }}
+      </dd>
+    </div>
+  </dl>
+</div>

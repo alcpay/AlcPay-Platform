@@ -1,14 +1,14 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { environment } from '../environments/environment'
+import { environment } from '../app/environments/environment';
 /**
  * User model interface describing the shape of user data.
  * TODO: Expand the interface to include additional user properties.
  */
-import { User } from '../models/user.model'
+import { User } from '../models/user.model';
 
 /**
  * UserService handles user authentication and management.
@@ -22,10 +22,10 @@ import { User } from '../models/user.model'
 })
 export class UserService {
   // BehaviorSubject to track the current user state, typed as User or null.
-  private currentUserState: BehaviorSubject<any>
+  private currentUserState: BehaviorSubject<any>;
 
   // Observable for components to subscribe to current user state changes.
-  public currentUser: Observable<User | any | null>
+  public currentUser: Observable<User | any | null>;
 
   /**
    * Constructs the UserService.
@@ -33,10 +33,10 @@ export class UserService {
    */
   constructor(private http: HttpClient) {
     // Retrieve the current user from local storage, if available.
-    const storedUser = localStorage.getItem('currentUser')
-    const initialUser: any = storedUser ? JSON.parse(storedUser) : null
-    this.currentUserState = new BehaviorSubject<any>(initialUser)
-    this.currentUser = this.currentUserState.asObservable()
+    const storedUser = localStorage.getItem('currentUser');
+    const initialUser: any = storedUser ? JSON.parse(storedUser) : null;
+    this.currentUserState = new BehaviorSubject<any>(initialUser);
+    this.currentUser = this.currentUserState.asObservable();
   }
 
   /**
@@ -46,7 +46,7 @@ export class UserService {
    * @todo: Remove the any type when the User model is expanded.
    */
   public get currentUserInfo(): any {
-    return this.currentUserState.value
+    return this.currentUserState.value;
   }
 
   /**
@@ -58,22 +58,28 @@ export class UserService {
    * @returns {Observable<User>} Observable emitting the authenticated user data.
    * @throws An error if the response does not contain a valid accessToken.
    */
-  login(email: string, password: string, rememberMe: boolean): Observable<User> {
-    return this.http.post<any>(`${environment.apiUrl}/public/auth/login`, { email, password }).pipe(
-      map((response) => {
-        // Validate that the response contains an accessToken.
-        if (response.data && response.data.accessToken) {
-          const user: User = response.data
-          // Store user details in local storage.
-          localStorage.setItem('currentUser', JSON.stringify(user))
-          localStorage.setItem('rememberMe', String(user.email))
-          // Update the current user state.
-          this.currentUserState.next(user)
-          return user
-        }
-        throw new Error('Invalid login response: accessToken missing')
-      }),
-    )
+  login(
+    email: string,
+    password: string,
+    rememberMe: boolean,
+  ): Observable<User> {
+    return this.http
+      .post<any>(`${environment.apiUrl}/public/auth/login`, { email, password })
+      .pipe(
+        map((response) => {
+          // Validate that the response contains an accessToken.
+          if (response.data && response.data.accessToken) {
+            const user: User = response.data;
+            // Store user details in local storage.
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('rememberMe', String(user.email));
+            // Update the current user state.
+            this.currentUserState.next(user);
+            return user;
+          }
+          throw new Error('Invalid login response: accessToken missing');
+        }),
+      );
   }
 
   /**
@@ -103,27 +109,29 @@ export class UserService {
       ...(brandName && { brandName }),
       ...(contact && { contact }),
       ...(website && { website }),
-    }
+    };
 
-    return this.http.post<any>(`${environment.apiUrl}/public/brand/register`, payload).pipe(
-      map((response) => {
-        // Validate that the response contains an accessToken.
-        if (response.data && response.data.accessToken) {
-          const user: User = response.data
+    return this.http
+      .post<any>(`${environment.apiUrl}/public/brand/register`, payload)
+      .pipe(
+        map((response) => {
+          // Validate that the response contains an accessToken.
+          if (response.data && response.data.accessToken) {
+            const user: User = response.data;
 
-          // Store user details in local storage.
-          localStorage.setItem('currentUser', JSON.stringify(user))
-          // Store the email in local storage for remember me functionality.
-          localStorage.setItem('rememberMe', String(email))
+            // Store user details in local storage.
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            // Store the email in local storage for remember me functionality.
+            localStorage.setItem('rememberMe', String(email));
 
-          // Update the current user state.
-          this.currentUserState.next(user)
+            // Update the current user state.
+            this.currentUserState.next(user);
 
-          return user
-        }
-        throw new Error('Invalid registration response: accessToken missing')
-      }),
-    )
+            return user;
+          }
+          throw new Error('Invalid registration response: accessToken missing');
+        }),
+      );
   }
 
   /**
@@ -131,15 +139,15 @@ export class UserService {
    */
   logout(): void {
     // Remove user data from local storage.
-    localStorage.removeItem('currentUser')
-    localStorage.removeItem('rememberMe')
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('rememberMe');
 
     // Reset the current user state.
-    this.currentUserState.next(null)
+    this.currentUserState.next(null);
   }
 
   // Example method: Get user data
   getUserData(): Observable<User> {
-    return this.http.get<User>('/api/user')
+    return this.http.get<User>('/api/user');
   }
 }

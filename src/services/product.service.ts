@@ -1,9 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * ProductService manages API interactions for creating, updating,
@@ -37,7 +37,7 @@ export class ProductService {
     return this.http.get<any>(`${environment.apiUrl}/products`).pipe(
       map((response) => response),
       catchError(this.handleError),
-    )
+    );
   }
 
   /**
@@ -51,7 +51,7 @@ export class ProductService {
     return this.http.get<any>(`${environment.apiUrl}/product/${idString}`).pipe(
       map((response) => response),
       catchError(this.handleError),
-    )
+    );
   }
 
   /**
@@ -64,7 +64,7 @@ export class ProductService {
     return this.http.post<any>(`${environment.apiUrl}/product`, body).pipe(
       map((response) => response),
       catchError(this.handleError),
-    )
+    );
   }
 
   /**
@@ -76,10 +76,12 @@ export class ProductService {
    */
   updateProduct(id: number | string, body: any): Observable<any> {
     const idString = id.toString(); // Convert id to string to ensure URL consistency
-    return this.http.put<any>(`${environment.apiUrl}/product/${idString}`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    );
+    return this.http
+      .put<any>(`${environment.apiUrl}/product/${idString}`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -90,10 +92,12 @@ export class ProductService {
    */
   deleteProduct(id: number | string): Observable<any> {
     const idString = id.toString(); // Convert id to string to ensure URL consistency
-    return this.http.delete<any>(`${environment.apiUrl}/product/${idString}`).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .delete<any>(`${environment.apiUrl}/product/${idString}`)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -103,7 +107,7 @@ export class ProductService {
    * @returns Observable with error
    */
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('An error occurred:', error)
-    return throwError(() => new Error(error.message || 'Server error'))
+    console.error('An error occurred:', error);
+    return throwError(() => new Error(error.message || 'Server error'));
   }
 }

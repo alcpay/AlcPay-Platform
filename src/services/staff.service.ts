@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
-import { catchError, map, publishReplay, refCount } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * StaffService manages staff-related API interactions.
@@ -37,13 +37,15 @@ export class StaffService {
    * @returns Observable with staff list
    */
   list(reqTablesParameters: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/staff/list`, reqTablesParameters).pipe(
-      map((response) => response),
-      catchError((err) => {
-        console.error('An error occurred:', err)
-        return throwError(err)
-      }),
-    )
+    return this.http
+      .post<any>(`${environment.apiUrl}/staff/list`, reqTablesParameters)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          console.error('An error occurred:', err);
+          return throwError(err);
+        }),
+      );
   }
 
   /**
@@ -56,10 +58,10 @@ export class StaffService {
     return this.http.post<any>(`${environment.apiUrl}/staff/add`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        console.error('An error occurred:', err)
-        return throwError(err)
+        console.error('An error occurred:', err);
+        return throwError(err);
       }),
-    )
+    );
   }
 
   /**
@@ -72,10 +74,10 @@ export class StaffService {
     return this.http.put<any>(`${environment.apiUrl}/staff/edit`, body).pipe(
       map((response) => response),
       catchError((err) => {
-        console.error('An error occurred:', err)
-        return throwError(err)
+        console.error('An error occurred:', err);
+        return throwError(err);
       }),
-    )
+    );
   }
 
   /**
@@ -85,13 +87,15 @@ export class StaffService {
    * @returns Observable with delete response
    */
   delete(id: number): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/staff/delete?id=${id}`).pipe(
-      map((response) => response),
-      catchError((err) => {
-        console.error('An error occurred:', err)
-        return throwError(err)
-      }),
-    )
+    return this.http
+      .delete<any>(`${environment.apiUrl}/staff/delete?id=${id}`)
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          console.error('An error occurred:', err);
+          return throwError(err);
+        }),
+      );
   }
 
   /**
@@ -102,12 +106,14 @@ export class StaffService {
    * @returns Observable with password reset response
    */
   resetPassword(id: number, password: string): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/staff/resetPassword`, { id, password }).pipe(
-      map((response) => response),
-      catchError((err) => {
-        console.error('An error occurred:', err)
-        return throwError(err)
-      }),
-    )
+    return this.http
+      .put<any>(`${environment.apiUrl}/staff/resetPassword`, { id, password })
+      .pipe(
+        map((response) => response),
+        catchError((err) => {
+          console.error('An error occurred:', err);
+          return throwError(err);
+        }),
+      );
   }
 }

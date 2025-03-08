@@ -15,9 +15,9 @@
 /*                      Button Defaults                         */
 /* ------------------------------------------------------------ */
 input[type="button"], input[type="submit"], button, .btn {
-    @apply px-4 py-2 text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent leading-5 no-underline hover:shadow-md active:shadow-sm border border-transparent  transition-opacity duration-300 ease-in-out text-center rounded-full font-semibold focus:outline-0 opacity-100 cursor-pointer pointer-events-auto hover:opacity-80 active:opacity-90 hover:scale-105 active:scale-100;
+    /* @apply px-4 py-2 text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-transparent leading-5 no-underline hover:shadow-md active:shadow-sm border border-transparent  transition-opacity duration-300 ease-in-out text-center rounded-full font-semibold focus:outline-0 opacity-100 cursor-pointer pointer-events-auto hover:opacity-80 active:opacity-90 hover:scale-105 active:scale-100; */
 }
-input[type="button"]:disabled, input[type="submit"]:disabled, button:disabled, .btn:disabled {
+input[type="button"]:disabled, input[type="submit"]:disabled, button:disabled, .btn:disabled, .btn.disabled {
     @apply !opacity-50 !cursor-not-allowed;
 }
 

@@ -1,8 +1,7 @@
-
 @import 'theme/config.css';
 @import 'theme/fonts.css';
 @import 'theme/base.css';
 @import 'theme/typography.css';
 @import 'theme/buttons.css';
 @import 'theme/icons.css';
-@import 'theme/theme.css';
+@import 'theme/layouts.css';

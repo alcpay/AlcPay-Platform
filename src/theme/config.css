@@ -1,24 +1,38 @@
-:root {
-    /* --color-brand-primary: var(--color-emerald-500);
-    --color-brand-alternate: var(--color-gray-900);
-    --color-info: var(--color-indigo-500);
-    --color-success: var(--color-emerald-600);
-    --color-warning: var(--color-yellow-500);
-    --color-error: var(--color-red-500);
-    --color-neutral: var(--color-gray-500);
-    --color-background: var(--color-white);
-    --color-surface: var(--color-gray-50);
-    --bg-dark: var(--color-gray-900);
-    --bg-light: var(--color-gray-50);
-    --border-color: var(--color-gray-200);
-    --border-color-hover: var(--color-gray-300);
-    --border-color-active: var(--color-gray-400);
-    --border-color-focus: var(--color-gray-500);
-    --default-transition: all 0.2sease-in-out;
-    --line-height-base: 1.5;
-    --line-height-sm: 1.25;
-    --line-height-md: 1.5;
-    --line-height-lg: 1.75;
-    --line-height-xl: 2;
-    --line-height-2xl: 2.5;  */
+/**
+ * MyComponentName
+ *
+ * My component does this and that. For this user it does these things.
+ * Other users can not access this component.
+ *
+ * import: @alcpay/tailwind
+ * path: themes/switcher.component.ts
+ */
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer theme {
+  :root {
+    /* Alcpay Colors */
+    --alcpay-brand-primary: var(--bg-emerald-700);
+    --alcpay-brand-secondary: var(--bg-lime-700);
+    /* Sidebar Colors */
+    --sidebar-bg: #ffffff;
+    --sidebar-content: var(--text-gray-800);
+    /* Sidebar Nav Links */
+    --sidebar-nav-link-content: var(--text-gray-800);
+    --sidebar-nav-link-content-hover: var(--text-gray-900);
+    --sidebar-nav-link-content-active: var(--text-gray-950);
+    /* Sidebar Nav Links Background */
+    --sidebar-nav-link-bg: none;
+    --sidebar-nav-link-bg-hover: rgba(0, 0, 0, 0.04);
+    --sidebar-nav-link-bg-active: var(--color-indigo-500);
+    /* Sidebar Font Weight & Size */
+    --sidebar-nav-link-font-size: 18px;
+    --sidebar-nav-link-font-weight: 500;
+
+    --main-bg: #ffffff;
+    --main-content: var(--text-gray-950);
+  }
 }

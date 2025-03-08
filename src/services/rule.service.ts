@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { environment } from './../environments/environment'
+import { environment } from '../app/environments/environment';
 
 /**
  * RuleService manages API interactions for creating, updating,
@@ -36,10 +36,12 @@ export class RuleService {
    * @returns Observable with rule creation response
    */
   addStateRule(body: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/rule/state-rule`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .post<any>(`${environment.apiUrl}/rule/state-rule`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -49,10 +51,12 @@ export class RuleService {
    * @returns Observable with rule creation response
    */
   addZipRule(body: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/rule/zip-rule`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .post<any>(`${environment.apiUrl}/rule/zip-rule`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -62,10 +66,12 @@ export class RuleService {
    * @returns Observable with rule creation response
    */
   addProductRule(body: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/rule/product-rule`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .post<any>(`${environment.apiUrl}/rule/product-rule`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -74,7 +80,7 @@ export class RuleService {
    * @returns Observable with rules list
    */
   getRuleList(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/rule/get-rules`)
+    return this.http.get(`${environment.apiUrl}/rule/get-rules`);
   }
 
   /**
@@ -84,10 +90,12 @@ export class RuleService {
    * @returns Observable with update response
    */
   updateState(body: any): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/rule/state-rule/update`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .put<any>(`${environment.apiUrl}/rule/state-rule/update`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -97,10 +105,12 @@ export class RuleService {
    * @returns Observable with deletion response
    */
   deleteStateRule(id: any): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/rule/state-rule/remove?id=${id}`).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .delete<any>(`${environment.apiUrl}/rule/state-rule/remove?id=${id}`)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -110,10 +120,12 @@ export class RuleService {
    * @returns Observable with deletion response
    */
   deleteProductRule(id: number): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/rule/product-rule/remove?id=${id}`).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .delete<any>(`${environment.apiUrl}/rule/product-rule/remove?id=${id}`)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -123,10 +135,12 @@ export class RuleService {
    * @returns Observable with update response
    */
   updateProductRule(body: any): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/rule/product-rule/update`, body).pipe(
-      map((response) => response),
-      catchError(this.handleError),
-    )
+    return this.http
+      .put<any>(`${environment.apiUrl}/rule/product-rule/update`, body)
+      .pipe(
+        map((response) => response),
+        catchError(this.handleError),
+      );
   }
 
   /**
@@ -135,7 +149,7 @@ export class RuleService {
    * @returns Observable with product rules
    */
   getProductRules(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/rule/product-rules`)
+    return this.http.get<any>(`${environment.apiUrl}/rule/product-rules`);
   }
 
   /**
@@ -144,7 +158,7 @@ export class RuleService {
    * @returns Observable with state rules
    */
   getStateRules(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/rule/state-rules`)
+    return this.http.get<any>(`${environment.apiUrl}/rule/state-rules`);
   }
 
   /**
@@ -154,7 +168,7 @@ export class RuleService {
    * @returns Observable with error
    */
   private handleError(error: any) {
-    console.error('An error occurred:', error)
-    return throwError(() => new Error(error.message || 'Server error'))
+    console.error('An error occurred:', error);
+    return throwError(() => new Error(error.message || 'Server error'));
   }
 }

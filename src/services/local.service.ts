@@ -11,12 +11,11 @@ import { AuthService } from './auth.service';
  * path: themes/switcher.component.ts
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalService {
-
   // User-specific identifier used to generate a dynamic encryption key.
-  private userIdentifier: string;
+  private userIdentifier: string | null;
 
   constructor(private authService: AuthService) {
     // Initialize userIdentifier with a unique value, e.g., user ID or email.
@@ -27,29 +26,31 @@ export class LocalService {
    * Generates a dynamic encryption key based on the user identifier.
    * @returns {string} The dynamic encryption key.
    */
-  private getDynamicCryptoKey(): string {
-    return CryptoJS.SHA256(this.userIdentifier).toString();
+  private getDynamicCryptoKey(): string | null {
+    return this.userIdentifier
+      ? CryptoJS.SHA256(this.userIdentifier).toString()
+      : null;
   }
 
   /**
    * Retrieves a unique identifier for the user.
-   * This could be a user ID, email, or any other 
+   * This could be a user ID, email, or any other
    * unique user-specific information.
-   * 
+   *
    * Currently the user identifier is a static value.
    * @TODO: Update to use the email address of the logged
    * in user.
    * @returns {string} The user identifier.
    */
-  private getUserIdentifier(): string {
+  private getUserIdentifier(): string | null {
     // Placeholder for actual user-specific logic.
     // Replace with actual logic to retrieve user-specific information.
-    return this.authService.getCurrentUser()?.user?.email;
+    return this.authService.getCurrentUser()?.user?.email ?? null;
   }
 
   /**
    * Saves and encrypts key/value pair data in local storage.
-   * @param {string} key 
+   * @param {string} key
    * @param {string} value
    * @returns {void}
    */
@@ -60,18 +61,18 @@ export class LocalService {
   /**
    * This method retrieves encrypted locally stored data
    * found by key (string) as argument.
-   * @param key 
+   * @param key
    * @returns {string} Unencrypted data
    */
   public getData(key: string): string {
-    let data = localStorage.getItem(key) || "";
+    let data = localStorage.getItem(key) || '';
     return this.decrypt(data);
   }
 
   /**
-   * Removes locally stored data by key passed in 
+   * Removes locally stored data by key passed in
    * as a string argument.
-   * @param key 
+   * @param key
    * @returns {void}
    */
   public removeData(key: string): void {
@@ -89,22 +90,23 @@ export class LocalService {
   /**
    * Encrypts un-encrypted data and returns the encrypted
    * data as a string.
-   * @param data 
+   * @param data
    * @returns {string} The encrypted data as a string.
    */
   private encrypt(data: string): string {
     const cryptoKey = this.getDynamicCryptoKey();
-    return CryptoJS.AES.encrypt(data, cryptoKey).toString();
+    return CryptoJS.AES.encrypt(data, cryptoKey ?? '').toString();
   }
 
   /**
    * Decrypts encrypted data using the dynamic cryptoKey.
-   * @param cryptoData 
+   * @param cryptoData
    * @returns {string} The decrypted data as a string.
    */
   private decrypt(cryptoData: string): string {
     const cryptoKey = this.getDynamicCryptoKey();
-    return CryptoJS.AES.decrypt(cryptoData, cryptoKey).toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(cryptoData, cryptoKey ?? '').toString(
+      CryptoJS.enc.Utf8,
+    );
   }
-
 }

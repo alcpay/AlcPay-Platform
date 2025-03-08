@@ -1,23 +1,22 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
+/**
+ * SpinnerComponent
+ *
+ * A loading spinner that can be displayed either inline or as a centered overlay.
+ * When overlay=true, the spinner is fixed and centered in the viewport using
+ * Tailwind's flex and fixed positioning utilities.
+ * When overlay=false, the spinner displays inline at its insertion point.
+ *
+ * import: @alcpay/tailwind
+ * path: themes/switcher.component.ts
+ */
 @Component({
-  selector: 'twng-spinner',
+  selector: 'ui-spinner',
+  standalone: true, // Make the component standalone for easy import
   imports: [CommonModule],
-  template: `<!--
-  Spinner Component
-
-  A loading spinner that can be displayed either inline or as a centered overlay.
-  When overlay=true, the spinner is fixed and centered in the viewport using
-  Tailwind's flex and fixed positioning utilities.
-  When overlay=false, the spinner displays inline at its insertion point.
-
-  @inputs
-  - size: number - Size of the spinner in Tailwind width/height units
-  - color: string - CSS color class for the spinner
-  - overlay: boolean - Whether to show as centered overlay
-  - isVisible: boolean - Controls visibility of spinner
--->
+  template: `
     <div
       *ngIf="isVisible"
       [ngClass]="{
@@ -43,20 +42,30 @@ import { Component, Input } from '@angular/core';
         </svg>
         <span class="sr-only">Loading...</span>
       </div>
-    </div> `,
-  styleUrl: './spinner.component.css',
+    </div>
+  `,
 })
-export class SpinnerComponent {
-  @Input() isVisible = false;
-  @Input() overlay = false;
-  @Input() size = '8';
-  @Input() color = 'text-green-600';
+export default class SpinnerComponent {
+  /** Controls visibility of spinner */
+  @Input() isVisible: boolean = false;
+  /** Whether to show as centered overlay */
+  @Input() overlay: boolean = false;
+  /** Size of the spinner in Tailwind width/height units */
+  @Input() size: string = '8';
+  /** CSS color class for the spinner */
+  @Input() color: string = 'text-green-600';
 
-  show() {
+  /**
+   * Shows the spinner by setting isVisible to true
+   */
+  show(): void {
     this.isVisible = true;
   }
 
-  hide() {
+  /**
+   * Hides the spinner by setting isVisible to false
+   */
+  hide(): void {
     this.isVisible = false;
   }
 }

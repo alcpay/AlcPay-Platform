@@ -1,30 +1,54 @@
-/**
- * AuthPage
- *
- * This component represents the authentication page for the application.
- * It is a standalone component that imports common Angular modules.
- * 
- * import: @alcpay/tailwind
- * path: themes/switcher.component.ts
- */
-
-import { Component } from '@angular/core'; // Importing Component from Angular core
-import { CommonModule } from '@angular/common'; // Importing CommonModule for common Angular directives
-import { RouterModule, RouterOutlet } from '@angular/router'; // Importing RouterModule for routing capabilities
+import { CommonModule } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthenticatedUser } from '../../models';
+import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-auth', // Selector for the component
-  standalone: true, // Indicates that this is a standalone component
-  imports: [CommonModule, RouterModule, RouterOutlet], // Modules imported for this component
-  template: `
-    <div class="min-h-screen bg-gray-100 p-6">
-      <h1>Alcpay Authentication</h1>
-      <router-outlet></router-outlet>
-    </div>
-  `
+  standalone: true,
+  imports: [CommonModule, RouterOutlet],
+  selector: 'app-auth',
+  template: `<div class="auth-layout h-full w-full h-screen w-screen">
+    <router-outlet></router-outlet>
+  </div>`,
+  providers: [UserService],
 })
-export default class AuthPage {
-  constructor() {
-    console.log('AuthPage'); // Log message for constructor
+export default class AuthPage implements OnInit {
+  isCustomer: boolean = true;
+  isStaff: boolean = false;
+  isSuperAdmin: boolean = false;
+  isGuest: boolean = false;
+
+  isAuthenticated: boolean = false;
+  currentUser: AuthenticatedUser | null = null;
+  isMobileSidebarOpen = false;
+  menuConfig: any = {};
+
+  constructor(
+    @Inject(UserService) private userService: UserService,
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    console.log('*** Template Component Loaded: GuestLayoutComponent ***');
+    this.userService.currentUser.subscribe((user: AuthenticatedUser) => {
+      this.currentUser = user;
+      this.isAuthenticated = !!this.currentUser;
+      this.isCustomer = this.currentUser?.roleId === 3;
+      this.isStaff = this.currentUser?.roleId === 2;
+      this.isSuperAdmin = this.currentUser?.isSuperAdmin || false;
+      this.isGuest = this.currentUser?.roleId === 1;
+    });
+  }
+
+  toggleMobileSidebar(): void {
+    console.log('toggleMobileSidebar clicked!');
+    this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  }
+
+  logout(): void {
+    console.log('logout clicked!');
+    this.userService.logout();
+    this.router.navigate(['/login']);
   }
 }
