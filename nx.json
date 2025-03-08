@@ -14,7 +14,7 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "67c4c0e7df5e79d612166419",
+  "nxCloudId": "67cc9e0e608f5393be0ba88d",
   "tasksRunnerOptions": {
     "default": { "runner": "nx-cloud", "options": { "accessToken": "" } }
   },
